@@ -22,12 +22,14 @@ https://wireframe.cc/eNtijM
     * uncleared
     * number
   * 
-  ```object cell = {
+  ```
+  object cell = {
       index: i
       cleared: true/false
       flagged: true/false
       mine: true/false
-  }```
+  }
+  ```
   * store adjacent cell list in each cell obj, easy retrieval? 
  
 
