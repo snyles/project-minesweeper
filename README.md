@@ -8,12 +8,6 @@ https://wireframe.cc/eNtijM
 
 ## Pseudocode
 
-* Create board grid in css
-  * board size changes with difficulty?
-    * dropdown
-    * implement smallest first, make scalable
-  * mobile first? 
-
 * data structure hold value of cells
   * values
     * mine
@@ -21,7 +15,8 @@ https://wireframe.cc/eNtijM
     * cleared
     * uncleared
     * number
-  * 
+  
+  * array of cells **model**
   ```
   object cell = {
       index: i
@@ -30,6 +25,8 @@ https://wireframe.cc/eNtijM
       mine: true/false
   }
   ```
+  * number of adjacent mines?
+  * function: this.explode?
   * store adjacent cell list in each cell obj, easy retrieval? 
  
 
@@ -40,11 +37,18 @@ https://wireframe.cc/eNtijM
   * check contents of adjacent cells
 
 
-* render function
+* render function **view**
   * css classes for state of cells
   * buttons?
 
-* mouseclick event
+* Create board grid in css
+  * board size changes with difficulty?
+    * dropdown
+    * implement smallest first, make scalable
+  * mobile first? 
+
+
+* mouseclick event **control**
   * right click
     * reveal square
     * bomb? = explode.exe
@@ -52,4 +56,6 @@ https://wireframe.cc/eNtijM
     * mark flag, remove flag
   * double mouseclick
     * reveal surrounding squares if safe, marked, number logic
+
+  * functions that update model based on clicks
 
