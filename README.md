@@ -9,30 +9,43 @@ https://wireframe.cc/eNtijM
 ## Pseudocode
 
 * Create board grid in css
-    * board size changes with difficulty?
-        * dropdown
-        * implement smallest first, make scalable
+  * board size changes with difficulty?
+    * dropdown
+    * implement smallest first, make scalable
+  * mobile first? 
 
 * data structure hold value of cells
+  * values
     * mine
     * flag
     * cleared
     * uncleared
     * number
+  * ```object cell = {
+      cleared: true/false
+      flagged: true/false
+      mine: true/false
+  }```
+  * store adjacent cell list in each cell obj, easy retrieval? 
+ 
 
 * algorithm for retreiving value of adjacent cells
-    * based on board size
-        * cell above cell index x = x - boardwidth
-    * check contents of adjacent cells
+  * based on board size
+    * cell above cell index x = x - boardwidth
+    * cell below x + boardwidth, etc
+  * check contents of adjacent cells
 
 
 * render function
-    * css classes for state of cells
-    * buttons?
+  * css classes for state of cells
+  * buttons?
 
 * mouseclick event
-    * right click
-    * left click
-    * double mouseclick
+  * right click
+    * reveal square
+    * bomb? = explode.exe
+  * left click
+    * mark flag, remove flag
+  * double mouseclick
+    * reveal surrounding squares if safe, marked, number logic
 
-    get
