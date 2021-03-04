@@ -28,6 +28,10 @@ https://wireframe.cc/eNtijM
   * number of adjacent mines?
   * function: this.explode?
   * store adjacent cell list in each cell obj, easy retrieval? 
+
+* other variables
+  * total mines, flags remaining
+  * timer?
  
 
 * algorithm for retreiving value of adjacent cells
@@ -58,4 +62,13 @@ https://wireframe.cc/eNtijM
     * reveal surrounding squares if safe, marked, number logic
 
   * functions that update model based on clicks
+
+
+* state of board does not change with gameplay, only information that is revealed
+  * create board object with all data at start of game?
+    * randomly place mines
+    * assign adjacent mine data to all cells?
+
+* how much to reveal, stop at cells with adjacent mines
+
 
