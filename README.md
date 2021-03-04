@@ -70,5 +70,8 @@ https://wireframe.cc/eNtijM
     * assign adjacent mine data to all cells?
 
 * how much to reveal, stop at cells with adjacent mines
+  * reveal cell function
+    * recursion to adjacent cells
+    * stops if has adjacent mines
 
 
