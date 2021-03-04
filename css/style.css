@@ -37,5 +37,15 @@ html {
 }
 
 #grid {
-    
+    margin: 10vmin 0 0 0;
+    min-width: 60vmin;
+    min-height: 50vmin;
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    border: solid 1px white;
+}
+
+#grid > .cell {
+    border: solid 1px white;
 }

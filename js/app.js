@@ -1,8 +1,8 @@
 /*-------------------------------- Constants --------------------------------*/
 
-const boardSizes = {
+const boardInfo = {
     small: { 
-        X: 10,
+        x: 10,
         y: 8,
         mines: 10
     },
@@ -28,21 +28,47 @@ let totalMines,
 
 const difficultySelect = document.querySelector('select');
 const grid = document.getElementById('grid');
+let cells = null
 
 /*----------------------------- Event Listeners -----------------------------*/
 
 difficultySelect.addEventListener('change', function(evt) {
     boardSize = evt.target.value;
-    grid.innerText = boardSize;
+    grid.innerHTML = '';
+    render();
 
 
 })
 
 /*-------------------------------- Functions --------------------------------*/
 
-function init(boardSize) {
+function init() {
+    boardSize = "small";
+    render();
+}
 
-    //create board grid based on size
-
+function render() {
+    drawGrid();
 
 }
+
+function drawGrid() {
+    let x = boardInfo[boardSize].x;
+    let y = boardInfo[boardSize].y;
+
+    grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`
+    grid.style.gridTemplateRows = `repeat(${y}, 1fr)`
+
+    let totalCells = x * y;
+    
+    for ( let i = 0; i < totalCells; i++ ) {
+
+        let el = document.createElement('div')
+        el.className = 'cell';
+        el.id = i;
+        grid.appendChild(el);
+    }
+    cells = grid.children;
+}
+
+init();
