@@ -21,7 +21,9 @@ https://wireframe.cc/eNtijM
     * cleared
     * uncleared
     * number
-  * ```object cell = {
+  * 
+  ```object cell = {
+      index: i
       cleared: true/false
       flagged: true/false
       mine: true/false
