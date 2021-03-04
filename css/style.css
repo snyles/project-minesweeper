@@ -46,6 +46,11 @@ html {
     border: solid 1px white;
 }
 
+    #grid.small {
+
+        
+    }
+
 #grid > .cell {
     border: solid 1px white;
 }
