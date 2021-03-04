@@ -62,6 +62,7 @@ grid.addEventListener('click', function(evt) {
 function init() {
     boardSize = "small";
     drawGrid();
+    createCells();
 }
 
 function render() {
@@ -95,6 +96,7 @@ function createCells() {
         cell.flag = false;
         cell.clear = false;
         cell.adjCells = getAdjCells(i);
+        cells.push(cell);
     }
 }
 
