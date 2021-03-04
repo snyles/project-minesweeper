@@ -10,25 +10,31 @@ https://wireframe.cc/eNtijM
 ##Pseudocode
 
 
-Create board grid in css
-    board size changes with difficulty?
-        dropdown
-        implement smallest first, make scalable
+*Create board grid in css
+    *board size changes with difficulty?
+        *dropdown
+        *implement smallest first, make scalable
 
-data structure hold value of cells
-    mine
-    flag
-    cleared
-    uncleared
-    number
+*data structure hold value of cells
+    *mine
+    *flag
+    *cleared
+    *uncleared
+    *number
 
-algorithm for retreiving value of adjacent cells
-    based on board size
+*algorithm for retreiving value of adjacent cells
+    *based on board size
+        *cell above cell index x = x - boardwidth
+    *check contents of adjacent cells
 
 
-mouseclick event
-    right click
-    left click
-    double mouseclick
+*render function
+    *css classes for state of cells
+    *buttons?
+
+*mouseclick event
+    *right click
+    *left click
+    *double mouseclick
 
     get
