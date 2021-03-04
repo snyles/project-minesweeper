@@ -4,7 +4,7 @@
 
 https://wireframe.cc/eNtijM
 
-![Minesweeper Wireframe](https://raw.githubusercontent.com/snyles/project-minesweeper/main/img/minesweep-wire.png)
+![Minesweeper Wireframe](https://i.imgur.com/oU7oc0q.png)
 
 
 ##Pseudocode
