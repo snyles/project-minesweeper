@@ -18,6 +18,8 @@ const boardInfo = {
     }
 }
 
+const explosion = new Audio('./sound/boom.wav')
+
 /*-------------------------------- Variables --------------------------------*/
 
 let totalMines,
@@ -26,7 +28,7 @@ let totalMines,
     boardSize,
     cells = [],
     firstClick,
-    boom
+    winner
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -44,28 +46,27 @@ difficultySelect.addEventListener('change', function(evt) {
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     let i = parseInt(e.target.id);
-    if (firstClick || boom) { return }
+    if (firstClick || winner) { return }
     rightClick(i);
 });
 
 grid.addEventListener('click', function(e) {
     let i = parseInt(e.target.id);
-    if (boom) { return };
+    if (winner) { return };
     leftClick(i);
 });
 
 grid.addEventListener('dblclick', function(e) {
     let i = parseInt(e.target.id);
-    if (boom) { return };
+    if (winner) { return };
     doubleClick(i);
 })
-
 
 /*-------------------------------- Functions --------------------------------*/
 
 function init() {
     firstClick = true;
-    boom = false;
+    winner = null;
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
@@ -102,30 +103,42 @@ function render() {
     // });
     /*-----------------------------------------------*/
 
-    cells.filter( c => c.clear && c.mine ).forEach (bomb => {
-        boom = true;
-        cellElements[bomb.id].innerHTML =
-            `<img src='img/Mine.ico' class='mine' id=${bomb.id} />`;
-        cellElements[bomb.id].style.backgroundColor = "red";
-    })
+    // cells.filter( c => c.clear && c.mine ).forEach (bomb => {
+    //     winner;
+    //     cellElements[bomb.id].style.backgroundColor = "red";
+    //     cellElements[bomb.id].innerHTML =
+    //         `<img src='img/Mine.ico' class='mine' id=${bomb.id} />`;
+    //     explosion.play();
+    // })
+
+    if (winner === "mines") {
+        cells.filter( c => c.mine ).forEach ( mine => {
+            cellElements[mine.id].innerHTML = 
+                `<img src='img/Mine.ico' class='mine' id=${mine.id} />`;
+            if (mine.clear) {
+                cellElements[mine.id].style.backgroundColor = "red";
+            }
+        })
+        explosion.play();
+    } else if (winner === "player" ) {
+        console.log("you are a super player");
+    }
     
-    //clear cell, fill in numbers
-    cells.filter ( c => c.render && c.clear ).forEach ( cell => {
-        cellElements[cell.id].style.backgroundColor = '#f3f3f3';
-        if (cell.adjMines) {
-            cellElements[cell.id].innerText = cell.adjMines;
-        }
-        cell.render = false;
-    })
+    cells.filter( c => c.render ).forEach ( cell => {
+            if (cell.clear) {
+                cellElements[cell.id].style.backgroundColor = '#f3f3f3';
+                if (cell.adjMines) {
+                    cellElements[cell.id].innerText = cell.adjMines;
+                }
+            } else {
+                cellElements[cell.id].innerHTML = (cell.flag) ?
+                `<img src='img/Flag.ico' class='flag' id=${cell.id} />` :
+                null;
+            }
+            cell.render = false;
+        })
 
-    //draw/remove flags
-    cells.filter( c => c.render && !c.clear ).forEach ( c => {
-        cellElements[c.id].innerHTML = (c.flag) ?
-            `<img src='img/Flag.ico' class='flag' id=${c.id} />` :
-            null;
-    })
-
-    flagsLeftEl.innerText = flagsLeft - cells.filter( c => c.flag ).length;
+    flagsLeftEl.innerText = flagsLeft;
 }
 
 /*------------------- View Functions -----------------------------------------*/
@@ -161,10 +174,15 @@ function leftClick(i) {
 }
 
 function rightClick(i) {
-    if (!cells[i].clear) {
-        cells[i].flag = !cells[i].flag;
-        cells[i].render = true;
-    }
+    if (cells[i].clear) return
+
+    cells[i].flag = !cells[i].flag;
+    cells[i].render = true;
+
+    flagsLeft = boardInfo[boardSize].mines - cells.filter( c => c.flag ).length
+    
+    if (flagsLeft === 0) checkWin();
+
     render();
 }
 
@@ -196,10 +214,10 @@ function createCells() {
 }
 
 function layMines(ex) {
-    mineNumber = boardInfo[boardSize].mines + ex.length;
+    mineNumber = boardInfo[boardSize].mines;
     let exclude = [...ex];
     
-    while (exclude.length < mineNumber) {
+    while (exclude.length < mineNumber + ex.length) {
         let rand = Math.floor(Math.random() * totalCells);
         if (!exclude.includes(rand)) {
             exclude.push(rand);
@@ -241,9 +259,11 @@ function setAdjMines () {
 
 function clearCell(i) {
     let cell = cells[i]
+    
     if (cell.mine && !cell.flag) {
         cell.clear = true;
-        return
+        winner = "mines";
+        return;
     }
     else if (cell.clear || cell.flag) {
         return
@@ -256,6 +276,18 @@ function clearCell(i) {
     if (cell.flag) {
         cell.flag = false;
     }
+}
+
+function checkWin() {
+    if (flagsLeft !== 0) return;
+
+    if (cells.filter(c => c.mine).every( c => c.flag )) {
+        winner = "player";
+        cells.filter(c => !c.mine && !c.flear && !c.flag ).forEach( cell => {
+            clearCell(cell.id);
+        })
+    }
+
 }
 
 init();
