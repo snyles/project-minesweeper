@@ -14,7 +14,7 @@ const boardInfo = {
     large: {
         x: 20,
         y: 16,
-        mines: 66
+        mines: 70
     }
 }
 
@@ -50,11 +50,8 @@ difficultySelect.addEventListener('change', function(evt) {
 
 grid.addEventListener('click', function(evt) {
     let i = parseInt(evt.target.id);
-    // console.log(i);
-    let adj = getAdjCells(i);
-    adj.forEach(function(n) {
-        cellElements[n].style.backgroundColor = "blue";
-    })
+    clearCell(i);
+    render();
 });
 
 
@@ -64,32 +61,42 @@ grid.addEventListener('click', function(evt) {
 function init() {
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
+
     createCells();
     layMines();
+    setAdjMines();
+
+    drawGrid()
     render();
-    getAdjMines();
 }
 
 function reset() {
+    cells = [];
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
-    cells = [];
+
     createCells();
     layMines();
+    setAdjMines();
+
     grid.innerHTML = ''
+    drawGrid()
     render();
-    getAdjMines();
 }
 
 function render() {
-    drawGrid()
-    let mines = cells.filter( c => c.mine === true )
-    
-    for (let m of mines) {
-        cellElements[m.id].innerText = "m";
-        cellElements[m.id].style.backgroundColor = "red";
+    cells.filter( c => c.mine ).forEach( mine => {
+        cellElements[mine.id].innerText = "m";
+        cellElements[mine.id].style.backgroundColor = "red";
+    })
 
-    }
+    cells.filter ( c => c.adjMines ).forEach ( cell => {
+        cellElements[cell.id].innerText = cell.adjMines
+    });
+
+    cells.filter ( c => c.clear ).forEach ( cell => {
+        cellElements[cell.id].style.backgroundColor = 'rgba(50,200,50,.5)';
+    })
 }
 
 /*------------------- View Functions -----------------------------------------*/
@@ -100,7 +107,6 @@ function drawGrid() {
 
     grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`
-    grid.className = boardSize;
     
     for ( let i = 0; i < totalCells; i++ ) {
         let el = document.createElement('div')
@@ -163,14 +169,28 @@ function getAdjCells(i) {
     return adj;
 }
 
-function getAdjMines () {
+function setAdjMines () {
     let notMines = cells.filter( c => !c.mine )
     for (let cell of notMines) {
         let mines = cell.adjCells.reduce(function (count, adj) {
             return (cells[adj].mine) ? ++count : count
         }, 0)
         cell.adjMines = (mines > 0) ? mines : null;
-        cellElements[cell.id].innerText = cell.adjMines; //remove me
+    }
+}
+
+function clearCell(i) {
+    if (cells[i].mine) {
+        console.log("boom");
+    }
+    else if (cells[i].flagged || cells[i].clear) {
+        return
+    }
+    else {
+        cells[i].clear = true;
+        if (!cells[i].adjMines) {
+            cells[i].adjCells.forEach( c => clearCell(c))
+        }
     }
 }
 
