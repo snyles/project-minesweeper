@@ -101,14 +101,11 @@ function drawGrid() {
     grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`
     grid.className = boardSize;
-
-    
     
     for ( let i = 0; i < totalCells; i++ ) {
         let el = document.createElement('div')
         el.className = 'cell';
         el.id = i;
-        //el.innerText = i;
         grid.appendChild(el);
     }
     cellElements = grid.children;
@@ -167,23 +164,14 @@ function getAdjCells(i) {
 }
 
 function getAdjMines () {
-    for (let cell of cells) {
-        let mines = 0;
-        if (!cell.mine) {
-            for (let adjC of cell.adjCells) {
-                if(cells[adjC].mine) mines++
-            }
-            if (mines > 0) {
-                cell.adjMines = mines;
-                cellElements[cell.id].innerText = mines;
-            }
-        }
+    let notMines = cells.filter( c => !c.mine )
+    for (let cell of notMines) {
+        let mines = cell.adjCells.reduce(function (count, adj) {
+            return (cells[adj].mine) ? ++count : count
+        }, 0)
+        cell.adjMines = (mines > 0) ? mines : null;
+        cellElements[cell.id].innerText = cell.adjMines; //remove me
     }
 }
-
-
-
-
-
 
 init();
