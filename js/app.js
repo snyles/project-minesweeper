@@ -63,28 +63,32 @@ grid.addEventListener('click', function(evt) {
 
 function init() {
     boardSize = difficultySelect.value;
-    drawGrid();
+    totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     createCells();
     layMines();
     render();
+    getAdjMines();
 }
 
 function reset() {
     boardSize = difficultySelect.value;
-    grid.innerHTML = ''
-    totalCells = null;
-    drawGrid();
+    totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     cells = [];
     createCells();
     layMines();
+    grid.innerHTML = ''
     render();
+    getAdjMines();
 }
 
 function render() {
+    drawGrid()
     let mines = cells.filter( c => c.mine === true )
     
     for (let m of mines) {
         cellElements[m.id].innerText = "m";
+        cellElements[m.id].style.backgroundColor = "red";
+
     }
 }
 
@@ -98,7 +102,7 @@ function drawGrid() {
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`
     grid.className = boardSize;
 
-    totalCells = x * y;
+    
     
     for ( let i = 0; i < totalCells; i++ ) {
         let el = document.createElement('div')
@@ -126,6 +130,20 @@ function createCells() {
     }
 }
 
+function layMines() {
+    mineNumber = boardInfo[boardSize].mines;
+    let mined = [];
+
+    while (mined.length < mineNumber) {
+        let rand = Math.floor(Math.random() * totalCells);
+        if (!mined.includes(rand)) {
+            mined.push(rand);
+            cells[rand].mine = true;
+        }
+
+    }
+}
+
 function getAdjCells(i) {
     let index = parseInt(i);
     let row = boardInfo[boardSize].x;
@@ -148,19 +166,23 @@ function getAdjCells(i) {
     return adj;
 }
 
-function layMines() {
-    mineNumber = boardInfo[boardSize].mines;
-    let mined = [];
-
-    while (mined.length < mineNumber) {
-        let rand = Math.floor(Math.random() * totalCells);
-        if (!mined.includes(rand)) {
-            mined.push(rand);
-            cells[rand].mine = true;
+function getAdjMines () {
+    for (let cell of cells) {
+        let mines = 0;
+        if (!cell.mine) {
+            for (let adjC of cell.adjCells) {
+                if(cells[adjC].mine) mines++
+            }
+            if (mines > 0) {
+                cell.adjMines = mines;
+                cellElements[cell.id].innerText = mines;
+            }
         }
-
     }
 }
+
+
+
 
 
 
