@@ -34,7 +34,8 @@ let totalMines,
     flagsLeft,
     totalCells,
     boardSize,
-    cells = []
+    cells = [],
+    firstClickSq
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -50,8 +51,16 @@ difficultySelect.addEventListener('change', function(evt) {
 
 grid.addEventListener('click', function(evt) {
     let i = parseInt(evt.target.id);
-    clearCell(i);
-    render();
+    if (!firstClickSq) {
+        firstClickSq = i;
+        firstClick(i);
+        clearCell(i);
+        render();
+    }
+    else {
+        clearCell(i);
+        render();
+    }
 });
 
 
@@ -63,21 +72,24 @@ function init() {
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
 
     createCells();
-    layMines();
-    setAdjMines();
+
+    // layMines();
+    // setAdjMines();
 
     drawGrid()
     render();
 }
 
 function reset() {
+    firstClickSq = null;
     cells = [];
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
 
     createCells();
-    layMines();
-    setAdjMines();
+
+    // layMines();
+    // setAdjMines();
 
     grid.innerHTML = ''
     drawGrid()
@@ -127,6 +139,13 @@ function drawGrid() {
 
 /*----------------------Control Functions ------------------------------------*/
 
+function firstClick(i) {
+    let exclude = getAdjCells(i);
+    exclude.push(i);
+
+    layMines(exclude);
+}
+
 function createCells() {
     for ( let i = 0; i < totalCells; i++ ) {
         let cell = {}
@@ -140,18 +159,18 @@ function createCells() {
     }
 }
 
-function layMines() {
-    mineNumber = boardInfo[boardSize].mines;
-    let mined = [];
-
-    while (mined.length < mineNumber) {
+function layMines(ex) {
+    mineNumber = boardInfo[boardSize].mines + ex.length;
+    let exclude = [...ex];
+    
+    while (exclude.length < mineNumber) {
         let rand = Math.floor(Math.random() * totalCells);
-        if (!mined.includes(rand)) {
-            mined.push(rand);
+        if (!exclude.includes(rand)) {
+            exclude.push(rand);
             cells[rand].mine = true;
         }
-
     }
+    setAdjMines();
 }
 
 function getAdjCells(i) {
