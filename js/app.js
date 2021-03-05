@@ -36,15 +36,15 @@ let totalMines,
 /*------------------------ Cached Element References ------------------------*/
 
 const difficultySelect = document.querySelector('select');
+const resetButton = document.getElementById('resetButton');
 const grid = document.getElementById('grid');
 const flagsLeftEl = document.querySelector('#flags-left span');
 let cellElements = null
 
 /*----------------------------- Event Listeners -----------------------------*/
 
-difficultySelect.addEventListener('change', function(evt) {
-    reset();
-})
+resetButton.addEventListener('click', reset )
+difficultySelect.addEventListener('change', reset )
 
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
@@ -117,18 +117,18 @@ function render() {
     }
     
     cells.filter( c => c.render ).forEach ( cell => {
-            if (cell.clear) {
-                cellElements[cell.id].style.backgroundColor = '#f3f3f3';
-                if (cell.adjMines) {
-                    cellElements[cell.id].innerText = cell.adjMines;
-                }
-            } else {
-                cellElements[cell.id].innerHTML = (cell.flag) ?
+        if (cell.clear) {
+            cellElements[cell.id].style.backgroundColor = '#f3f3f3';
+            if (cell.adjMines) {
+                cellElements[cell.id].innerText = cell.adjMines;
+            }
+        } else {
+            cellElements[cell.id].innerHTML = (cell.flag) ?
                 `<img src='img/Flag.ico' class='flag' id=${cell.id} />` :
                 null;
-            }
-            cell.render = false;
-        })
+        }
+        cell.render = false;
+    })
 
     flagsLeftEl.innerText = flagsLeft;
 }
