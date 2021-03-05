@@ -18,7 +18,10 @@ const boardInfo = {
     }
 }
 
-const explosion = new Audio('./sound/boom.wav')
+const explosionSound = new Audio('./sound/boom.wav');
+const loseSound = new Audio('./sound/lose.wav');
+const winSound = new Audio('./sound/win.wav');
+const applauseSound = new Audio('./sound/applause.wav');
 
 /*-------------------------------- Variables --------------------------------*/
 
@@ -46,19 +49,19 @@ difficultySelect.addEventListener('change', function(evt) {
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     let i = parseInt(e.target.id);
-    if (firstClick || winner) { return }
+    if (firstClick || winner || isNaN(i)) { return }
     rightClick(i);
 });
 
 grid.addEventListener('click', function(e) {
     let i = parseInt(e.target.id);
-    if (winner) { return };
+    if (winner || isNaN(i)) { return };
     leftClick(i);
 });
 
 grid.addEventListener('dblclick', function(e) {
     let i = parseInt(e.target.id);
-    if (winner) { return };
+    if (winner || isNaN(i)) { return };
     doubleClick(i);
 })
 
@@ -81,14 +84,6 @@ function reset() {
     grid.innerHTML = ''
    
     init();
-//     firstClick = true;
-//     boardSize = difficultySelect.value;
-//     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
-//     flagsLeft = boardInfo[boardSize].mines
-
-//     createCells();
-//     drawGrid()
-//     render();
 }
 
 function render() {
@@ -103,14 +98,6 @@ function render() {
     // });
     /*-----------------------------------------------*/
 
-    // cells.filter( c => c.clear && c.mine ).forEach (bomb => {
-    //     winner;
-    //     cellElements[bomb.id].style.backgroundColor = "red";
-    //     cellElements[bomb.id].innerHTML =
-    //         `<img src='img/Mine.ico' class='mine' id=${bomb.id} />`;
-    //     explosion.play();
-    // })
-
     if (winner === "mines") {
         cells.filter( c => c.mine ).forEach ( mine => {
             cellElements[mine.id].innerHTML = 
@@ -119,9 +106,14 @@ function render() {
                 cellElements[mine.id].style.backgroundColor = "red";
             }
         })
-        explosion.play();
+        explosionSound.play();
+        setTimeout(function() {
+            loseSound.play();
+        }, 500);
     } else if (winner === "player" ) {
         console.log("you are a super player");
+        winSound.play();
+        applauseSound.play();
     }
     
     cells.filter( c => c.render ).forEach ( cell => {
