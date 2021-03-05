@@ -275,7 +275,7 @@ function checkWin() {
 
     if (cells.filter(c => c.mine).every( c => c.flag )) {
         winner = "player";
-        cells.filter(c => !c.mine && !c.flear && !c.flag ).forEach( cell => {
+        cells.filter(c => !c.mine && !c.clear && !c.flag ).forEach( cell => {
             clearCell(cell.id);
         })
     }
