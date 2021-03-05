@@ -177,13 +177,12 @@ function getAdjCells(i) {
 }
 
 function setAdjMines () {
-    let notMines = cells.filter( c => !c.mine )
-    for (let cell of notMines) {
+    cells.filter( c => !c.mine ).forEach( cell => {
         let mines = cell.adjCells.reduce(function (count, adj) {
             return (cells[adj].mine) ? ++count : count
         }, 0)
         cell.adjMines = (mines > 0) ? mines : null;
-    }
+    })
 }
 
 function clearCell(i) {
