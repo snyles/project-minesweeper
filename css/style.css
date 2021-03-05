@@ -37,7 +37,7 @@ html {
 }
 
 #grid {
-    margin: 20px 0 0 0;
+    margin: 0;
     /* width: 60vmin;
     height: 50vmin; */
     display: grid;
@@ -45,6 +45,7 @@ html {
     grid-template-columns: repeat(8, 1fr);
     border: solid 1px white;
     color: #000;
+    
 }
 
     #grid.small {
@@ -60,6 +61,8 @@ html {
     justify-content: center;
     width: 40px;
     height: 40px;
+    cursor: default;
+    user-select: none;
 }
 
 img.flag, img.mine {
@@ -67,4 +70,21 @@ img.flag, img.mine {
     height: 30px;
 }
 
-#grid
+#info {
+    margin: 20px 0 2px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 400px;
+    font-size: 1.8rem;
+}
+#flags-left span {
+    font-size: 2rem;
+    color: white;
+}
+
+#flags-left > img {
+    width: 20px;
+    height: 20px;
+}

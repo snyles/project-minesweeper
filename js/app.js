@@ -25,12 +25,14 @@ let totalMines,
     totalCells,
     boardSize,
     cells = [],
-    firstClick
+    firstClick,
+    boom
 
 /*------------------------ Cached Element References ------------------------*/
 
 const difficultySelect = document.querySelector('select');
 const grid = document.getElementById('grid');
+const flagsLeftEl = document.querySelector('#flags-left span');
 let cellElements = null
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -42,24 +44,28 @@ difficultySelect.addEventListener('change', function(evt) {
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     let i = parseInt(e.target.id);
-    if (!firstClick) {
-        rightClick(i);
-    }
-
+    if (firstClick || boom) { return }
+    rightClick(i);
 });
 
 grid.addEventListener('click', function(e) {
     let i = parseInt(e.target.id);
-    let button = e.button;
+    if (boom) { return };
     leftClick(i);
-
 });
+
+grid.addEventListener('dblclick', function(e) {
+    let i = parseInt(e.target.id);
+    if (boom) { return };
+    doubleClick(i);
+})
 
 
 /*-------------------------------- Functions --------------------------------*/
 
 function init() {
     firstClick = true;
+    boom = false;
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
@@ -86,34 +92,40 @@ function reset() {
 
 function render() {
     /*--------------------- Debug--------------------*/
-    cells.filter( c => c.mine ).forEach( m => {
-        cellElements[m.id].innerHTML = 
-            `<img src='img/Mine.ico' class='mine' id=${m.id} />`
-    })
+    // cells.filter( c => c.mine ).forEach( m => {
+    //     cellElements[m.id].innerHTML = 
+    //         `<img src='img/Mine.ico' class='mine' id=${m.id} />`
+    // })
 
     // cells.filter ( c => c.adjMines ).forEach ( cell => {
     //     cellElements[cell.id].innerText = cell.adjMines
     // });
     /*-----------------------------------------------*/
 
+    cells.filter( c => c.clear && c.mine ).forEach (bomb => {
+        boom = true;
+        cellElements[bomb.id].innerHTML =
+            `<img src='img/Mine.ico' class='mine' id=${bomb.id} />`;
+        cellElements[bomb.id].style.backgroundColor = "red";
+    })
+    
     //clear cell, fill in numbers
-    cells.filter ( c => c.clear ).forEach ( cell => {
+    cells.filter ( c => c.render && c.clear ).forEach ( cell => {
         cellElements[cell.id].style.backgroundColor = '#f3f3f3';
         if (cell.adjMines) {
             cellElements[cell.id].innerText = cell.adjMines;
         }
+        cell.render = false;
     })
 
-    //draw flags
-    cells.filter( c => c.flag ).forEach ( c => {
-        cellElements[c.id].innerHTML = 
-            `<img src='img/Flag.ico' class='flag' id=${c.id} />`
-    })
-    //clear flags
-    cells.filter( c => !c.clear && !c.flag && !c.mine).forEach( c => {
-        cellElements[c.id].innerHTML = "";
+    //draw/remove flags
+    cells.filter( c => c.render && !c.clear ).forEach ( c => {
+        cellElements[c.id].innerHTML = (c.flag) ?
+            `<img src='img/Flag.ico' class='flag' id=${c.id} />` :
+            null;
     })
 
+    flagsLeftEl.innerText = flagsLeft - cells.filter( c => c.flag ).length;
 }
 
 /*------------------- View Functions -----------------------------------------*/
@@ -151,8 +163,22 @@ function leftClick(i) {
 function rightClick(i) {
     if (!cells[i].clear) {
         cells[i].flag = !cells[i].flag;
+        cells[i].render = true;
     }
     render();
+}
+
+function doubleClick(i) {
+    let cell = cells[i];
+    if (!cell.clear || !cell.adjMines) return
+    let flags = cell.adjCells.reduce( (count, adj) => {
+        return (cells[adj].flag) ? count + 1 : count;
+    }, 0)
+
+    if (flags === cell.adjMines) {
+        cell.adjCells.forEach( c => clearCell(c));
+        render();
+    }
 }
 
 function createCells() {
@@ -164,6 +190,7 @@ function createCells() {
         cell.clear = false;
         cell.adjCells = getAdjCells(i);
         cell.adjMines = null;
+        cell.render = false;
         cells.push(cell);
     }
 }
@@ -213,17 +240,21 @@ function setAdjMines () {
 }
 
 function clearCell(i) {
-    if (cells[i].mine) {
-        console.log("boom");
-    }
-    else if (cells[i].flagged || cells[i].clear) {
+    let cell = cells[i]
+    if (cell.mine && !cell.flag) {
+        cell.clear = true;
         return
     }
-    else {
-        cells[i].clear = true;
-        if (!cells[i].adjMines) {
-            cells[i].adjCells.forEach( c => clearCell(c))
-        }
+    else if (cell.clear || cell.flag) {
+        return
+    }
+    cell.clear = true;
+    cell.render = true;
+    if (!cell.adjMines) {
+        cell.adjCells.forEach( c => clearCell(c))
+    }
+    if (cell.flag) {
+        cell.flag = false;
     }
 }
 
