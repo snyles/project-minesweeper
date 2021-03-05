@@ -85,6 +85,8 @@ function reset() {
 }
 
 function render() {
+
+    /*----------- Debug------------*/
     cells.filter( c => c.mine ).forEach( mine => {
         cellElements[mine.id].innerText = "m";
         cellElements[mine.id].style.backgroundColor = "red";
@@ -93,9 +95,14 @@ function render() {
     cells.filter ( c => c.adjMines ).forEach ( cell => {
         cellElements[cell.id].innerText = cell.adjMines
     });
+    /*-----------------------------*/
+
 
     cells.filter ( c => c.clear ).forEach ( cell => {
-        cellElements[cell.id].style.backgroundColor = 'rgba(50,200,50,.5)';
+        cellElements[cell.id].style.backgroundColor = '#f3f3f3';
+        if (cell.adjMines) {
+            cellElements[cell.id].innerText = cell.adjMines;
+        }
     })
 }
 

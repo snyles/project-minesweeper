@@ -37,7 +37,7 @@ html {
 }
 
 #grid {
-    margin: 5vmin 0 0 0;
+    margin: 20px 0 0 0;
     /* width: 60vmin;
     height: 50vmin; */
     display: grid;
