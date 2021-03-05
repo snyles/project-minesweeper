@@ -85,7 +85,7 @@ function drawGrid() {
         let el = document.createElement('div')
         el.className = 'cell';
         el.id = i;
-        el.innerText = i;
+        //el.innerText = i;
         grid.appendChild(el);
     }
     cellElements = grid.children;
@@ -103,104 +103,28 @@ function createCells() {
     }
 }
 
-// function getAdjCells(i) {
-//     let adjCells = [];
-//     let index = parseInt(i)
-//     let topEdge = false, 
-//         leftEdge = false, 
-//         rightEdge = false, 
-//         bottomEdge = false;
-//     let row = boardInfo[boardSize].x;
-
-//     if (index < row) 
-//         topEdge = true;
-//     if (index > (totalCells - (row + 1))) 
-//         bottomEdge = true;
-//     if (index % row === 0)
-//         leftEdge = true;
-//     if ((index + 1) % row === 0)
-//         rightEdge = true;
-
-//     // console.log("top", topEdge, "right", rightEdge, "bottom", bottomEdge, "left", leftEdge);
-
-//     let NW = index - row - 1;
-//     let N = index - row;
-//     let NE = index - row + 1
-//     let W = index - 1;
-//     let E = index + 1;
-//     let SW = index + row - 1;
-//     let S = index + row;
-//     let SE = index + row + 1;
-
-//     if (topEdge) {
-//         if (leftEdge) {
-//             adjCells.push(E, S, SE);
-//         }
-//         else if (rightEdge) {
-//             adjCells.push(W, SW, S);
-//         }
-//         else {
-//             adjCells.push(W, E, SW, S, SE);
-//         }
-//     }
-//     else if (bottomEdge) {
-//         if (leftEdge) {
-//             adjCells.push(N, NE, E);
-//         }
-//         else if (rightEdge) {
-//             adjCells.push(NW, N, W);
-//         }
-//         else {
-//             adjCells.push(NW, N, NE, W, E);
-//         }
-//     }
-//     else if (leftEdge) {
-//         adjCells.push(N, NE, E, S, SE);
-//     }
-//     else if (rightEdge) {
-//         adjCells.push(NW, N, W, SW, S);
-//     }
-//     else {
-//         adjCells.push(NW, N, NE, W, E, SW, S, SE);
-//     }
-//     return(adjCells);
-// }
-
 function getAdjCells(i) {
     let index = parseInt(i);
-    let adj = [];
     let row = boardInfo[boardSize].x;
-    let position = index % row;
 
-    for ( let n = -1; n <= 1; n++ ) {
-        testIndex = index + (row * n) - 1;
-        if (testIndex % row < position && testIndex >= 0 && testIndex < totalCells) {
-            adj.push(testIndex)
-        }
-        testIndex++;
-        if (testIndex !== index && (testIndex % row === position) && testIndex >= 0 && testIndex < totalCells) {
-            adj.push(testIndex)
-        }
-        testIndex++;
-        if (testIndex % row > position && testIndex >= 0 && testIndex < totalCells) {
-            adj.push(testIndex)
-        }
-    }
+    let candidates = [
+        index - row - 1,
+        index - row,
+        index - row + 1,
+        index - 1,
+        index + 1,
+        index + row - 1,
+        index + row,
+        index + row + 1];
+
+    let adj = candidates.filter( n =>
+        n >= 0 && n < totalCells &&
+        Math.abs( (n % row) - (index % row)) <= 1 )
+
     return adj;
 }
-
-function getAdj(i) {
-    let index = parseInt(i);
-    let row = boardInfo[boardSize].x;
-    let adj = [];
-    let horizontalPosition = index % row;
-
-    let triplet = [horizontalPosition - 1, horizontalPosition, horizontalPosition + 1];
-
     
 
-
-}
 
 
 init();
