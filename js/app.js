@@ -7,14 +7,14 @@ const boardInfo = {
         mines: 10
     },
     medium: {
-        x: 18,
-        y: 14,
-        mines: 40
+        x: 16,
+        y: 12,
+        mines: 30
     },
     large: {
-        x: 24,
-        y: 20,
-        mines: 100
+        x: 20,
+        y: 16,
+        mines: 66
     }
 }
 
@@ -31,6 +31,7 @@ const sampleCell = {
 /*-------------------------------- Variables --------------------------------*/
 
 let totalMines,
+    flagsLeft,
     totalCells,
     boardSize,
     cells = []
@@ -44,9 +45,7 @@ let cellElements = null
 /*----------------------------- Event Listeners -----------------------------*/
 
 difficultySelect.addEventListener('change', function(evt) {
-    boardSize = evt.target.value;
-    grid.innerHTML = '';
-    drawGrid();
+    reset();
 })
 
 grid.addEventListener('click', function(evt) {
@@ -63,13 +62,33 @@ grid.addEventListener('click', function(evt) {
 /*-------------------------------- Functions --------------------------------*/
 
 function init() {
-    boardSize = "small";
+    boardSize = difficultySelect.value;
     drawGrid();
     createCells();
+    layMines();
+    render();
+}
+
+function reset() {
+    boardSize = difficultySelect.value;
+    grid.innerHTML = ''
+    totalCells = null;
+    drawGrid();
+    cells = [];
+    createCells();
+    layMines();
+    render();
 }
 
 function render() {
+    let mines = cells.filter( c => c.mine === true )
+    
+    for (let m of mines) {
+        cellElements[m.id].innerText = "m";
+    }
 }
+
+/*------------------- View Functions -----------------------------------------*/
 
 function drawGrid() {
     let x = boardInfo[boardSize].x;
@@ -91,6 +110,9 @@ function drawGrid() {
     cellElements = grid.children;
 }
 
+
+/*----------------------Control Functions ------------------------------------*/
+
 function createCells() {
     for ( let i = 0; i < totalCells; i++ ) {
         let cell = {}
@@ -99,6 +121,7 @@ function createCells() {
         cell.flag = false;
         cell.clear = false;
         cell.adjCells = getAdjCells(i);
+        cell.adjMines = null;
         cells.push(cell);
     }
 }
@@ -115,7 +138,8 @@ function getAdjCells(i) {
         index + 1,
         index + row - 1,
         index + row,
-        index + row + 1];
+        index + row + 1
+    ];
 
     let adj = candidates.filter( n =>
         n >= 0 && n < totalCells &&
@@ -123,7 +147,20 @@ function getAdjCells(i) {
 
     return adj;
 }
-    
+
+function layMines() {
+    mineNumber = boardInfo[boardSize].mines;
+    let mined = [];
+
+    while (mined.length < mineNumber) {
+        let rand = Math.floor(Math.random() * totalCells);
+        if (!mined.includes(rand)) {
+            mined.push(rand);
+            cells[rand].mine = true;
+        }
+
+    }
+}
 
 
 
