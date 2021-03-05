@@ -40,14 +40,17 @@ difficultySelect.addEventListener('change', function(evt) {
 })
 
 grid.addEventListener('contextmenu', function (e) {
-    let i = parseInt(e.target.id);
     e.preventDefault();
-    rightClick(i);
+    let i = parseInt(e.target.id);
+    if (!firstClick) {
+        rightClick(i);
+    }
 
-})
+});
 
 grid.addEventListener('click', function(e) {
     let i = parseInt(e.target.id);
+    let button = e.button;
     leftClick(i);
 
 });
@@ -82,25 +85,35 @@ function reset() {
 }
 
 function render() {
-
-    /*----------- Debug------------*/
-    cells.filter( c => c.mine ).forEach( mine => {
-        cellElements[mine.id].innerText = "m";
-        cellElements[mine.id].style.backgroundColor = "red";
+    /*--------------------- Debug--------------------*/
+    cells.filter( c => c.mine ).forEach( m => {
+        cellElements[m.id].innerHTML = 
+            `<img src='img/Mine.ico' class='mine' id=${m.id} />`
     })
 
-    cells.filter ( c => c.adjMines ).forEach ( cell => {
-        cellElements[cell.id].innerText = cell.adjMines
-    });
-    /*-----------------------------*/
+    // cells.filter ( c => c.adjMines ).forEach ( cell => {
+    //     cellElements[cell.id].innerText = cell.adjMines
+    // });
+    /*-----------------------------------------------*/
 
-
+    //clear cell, fill in numbers
     cells.filter ( c => c.clear ).forEach ( cell => {
         cellElements[cell.id].style.backgroundColor = '#f3f3f3';
         if (cell.adjMines) {
             cellElements[cell.id].innerText = cell.adjMines;
         }
     })
+
+    //draw flags
+    cells.filter( c => c.flag ).forEach ( c => {
+        cellElements[c.id].innerHTML = 
+            `<img src='img/Flag.ico' class='flag' id=${c.id} />`
+    })
+    //clear flags
+    cells.filter( c => !c.clear && !c.flag && !c.mine).forEach( c => {
+        cellElements[c.id].innerHTML = "";
+    })
+
 }
 
 /*------------------- View Functions -----------------------------------------*/
@@ -136,7 +149,10 @@ function leftClick(i) {
 }
 
 function rightClick(i) {
-    
+    if (!cells[i].clear) {
+        cells[i].flag = !cells[i].flag;
+    }
+    render();
 }
 
 function createCells() {
