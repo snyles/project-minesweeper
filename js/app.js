@@ -18,16 +18,6 @@ const boardInfo = {
     }
 }
 
-const sampleCell = {
-    id: 5,
-    mine: false,
-    flag: false,
-    clear: false,
-    adjCells: []
-
-}
-
-
 /*-------------------------------- Variables --------------------------------*/
 
 let totalMines,
@@ -35,7 +25,7 @@ let totalMines,
     totalCells,
     boardSize,
     cells = [],
-    firstClickSq
+    firstClick
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -49,51 +39,46 @@ difficultySelect.addEventListener('change', function(evt) {
     reset();
 })
 
-grid.addEventListener('click', function(evt) {
-    let i = parseInt(evt.target.id);
-    if (!firstClickSq) {
-        firstClickSq = i;
-        firstClick(i);
-        clearCell(i);
-        render();
-    }
-    else {
-        clearCell(i);
-        render();
-    }
-});
+grid.addEventListener('contextmenu', function (e) {
+    let i = parseInt(e.target.id);
+    e.preventDefault();
+    rightClick(i);
 
+})
+
+grid.addEventListener('click', function(e) {
+    let i = parseInt(e.target.id);
+    leftClick(i);
+
+});
 
 
 /*-------------------------------- Functions --------------------------------*/
 
 function init() {
+    firstClick = true;
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
+    flagsLeft = boardInfo[boardSize].mines
 
     createCells();
-
-    // layMines();
-    // setAdjMines();
-
     drawGrid()
     render();
 }
 
 function reset() {
-    firstClickSq = null;
     cells = [];
-    boardSize = difficultySelect.value;
-    totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
-
-    createCells();
-
-    // layMines();
-    // setAdjMines();
-
     grid.innerHTML = ''
-    drawGrid()
-    render();
+   
+    init();
+//     firstClick = true;
+//     boardSize = difficultySelect.value;
+//     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
+//     flagsLeft = boardInfo[boardSize].mines
+
+//     createCells();
+//     drawGrid()
+//     render();
 }
 
 function render() {
@@ -139,11 +124,19 @@ function drawGrid() {
 
 /*----------------------Control Functions ------------------------------------*/
 
-function firstClick(i) {
-    let exclude = getAdjCells(i);
-    exclude.push(i);
+function leftClick(i) {
+    if (firstClick) {
+        firstClick = false;
+        let exclude = [i, ...getAdjCells(i)];
+        layMines(exclude);
+        setAdjMines();
+    }
+    clearCell(i);
+    render();
+}
 
-    layMines(exclude);
+function rightClick(i) {
+    
 }
 
 function createCells() {
@@ -170,7 +163,6 @@ function layMines(ex) {
             cells[rand].mine = true;
         }
     }
-    setAdjMines();
 }
 
 function getAdjCells(i) {
