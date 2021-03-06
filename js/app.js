@@ -168,7 +168,11 @@ function leftClick(i) {
 function rightClick(i) {
     if (cells[i].clear) return
 
-    cells[i].flag = !cells[i].flag;
+    if (!cells[i].flag && flagsLeft > 0) {
+        cells[i].flag = true;
+    } else if (cells[i].flag) {
+        cells[i].flag = false;
+    }
     cells[i].render = true;
 
     flagsLeft = boardInfo[boardSize].mines - cells.filter( c => c.flag ).length
@@ -275,7 +279,7 @@ function checkWin() {
 
     if (cells.filter(c => c.mine).every( c => c.flag )) {
         winner = "player";
-        cells.filter(c => !c.mine && !c.clear && !c.flag ).forEach( cell => {
+        cells.filter(c => !c.mine && !c.clear ).forEach( cell => {
             clearCell(cell.id);
         })
     }
