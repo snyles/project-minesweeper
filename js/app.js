@@ -86,6 +86,8 @@ function reset() {
     init();
 }
 
+/*------------------- View Functions -----------------------------------------*/
+
 function render() {
     /*--------------------- Debug--------------------*/
     // cells.filter( c => c.mine ).forEach( m => {
@@ -110,7 +112,7 @@ function render() {
         setTimeout(function() {
             loseSound.play();
         }, 500);
-    } else if (winner === "player" ) {
+    } else if ( winner === "player" ) {
         console.log("you are a super player");
         winSound.play();
         applauseSound.play();
@@ -119,9 +121,7 @@ function render() {
     cells.filter( c => c.render ).forEach ( cell => {
         if (cell.clear) {
             cellElements[cell.id].style.backgroundColor = '#f3f3f3';
-            if (cell.adjMines) {
-                cellElements[cell.id].innerText = cell.adjMines;
-            }
+            cellElements[cell.id].innerText = cell.adjMines;
         } else {
             cellElements[cell.id].innerHTML = (cell.flag) ?
                 `<img src='img/Flag.ico' class='flag' id=${cell.id} />` :
@@ -132,8 +132,6 @@ function render() {
 
     flagsLeftEl.innerText = flagsLeft;
 }
-
-/*------------------- View Functions -----------------------------------------*/
 
 function drawGrid() {
     let x = boardInfo[boardSize].x;
@@ -151,7 +149,6 @@ function drawGrid() {
     cellElements = grid.children;
 }
 
-
 /*----------------------Control Functions ------------------------------------*/
 
 function leftClick(i) {
@@ -168,15 +165,10 @@ function leftClick(i) {
 function rightClick(i) {
     if (cells[i].clear) return
 
-    if (!cells[i].flag && flagsLeft > 0) {
-        cells[i].flag = true;
-    } else if (cells[i].flag) {
-        cells[i].flag = false;
-    }
+    cells[i].flag = !cells[i].flag;
     cells[i].render = true;
 
     flagsLeft = boardInfo[boardSize].mines - cells.filter( c => c.flag ).length
-    
     if (flagsLeft === 0) checkWin();
 
     render();
@@ -269,9 +261,6 @@ function clearCell(i) {
     if (!cell.adjMines) {
         cell.adjCells.forEach( c => clearCell(c))
     }
-    if (cell.flag) {
-        cell.flag = false;
-    }
 }
 
 function checkWin() {
@@ -283,7 +272,6 @@ function checkWin() {
             clearCell(cell.id);
         })
     }
-
 }
 
 init();
