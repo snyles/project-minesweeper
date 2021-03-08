@@ -35,16 +35,15 @@ html {
     justify-content: flex-start;
     text-align: center;
 
-    /* background-image: url('/img/sand_bg2.jpg');
-    background-position: top center;
-    background-size: cover; */
-
     --primary: #750a00;
-    /* --primary: #2f4858; */
+}
+
+select {
+    text-align: center;
 }
 
 h1 {
-    margin: 2vmin 0;
+    margin: 1vmin 0;
     color: var(--primary);
     font-size: 8vmin;
 }
@@ -55,13 +54,10 @@ label, button, option, select {
 
 #grid {
     margin: 0 0 5vmin 0;
-    /* width: 60vmin;
-    height: 50vmin; */
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(8, 1fr);
-    /* border: solid 1px white; */
-    color: black;
+    color: #333;
     /* text-shadow: black 1px 1px 2px; */
     user-select: none;
     /* background-image: url('/img/sand.jpg');
