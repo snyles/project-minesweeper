@@ -1,3 +1,7 @@
+// TODO: get timer to stop, responsive, dress it up, directions modal
+
+
+
 /*-------------------------------- Constants --------------------------------*/
 
 const boardInfo = {
@@ -18,6 +22,7 @@ const boardInfo = {
     }
 }
 
+
 const explosionSound = new Audio('./sound/boom.wav');
 const loseSound = new Audio('./sound/lose.wav');
 const winSound = new Audio('./sound/win.wav');
@@ -31,7 +36,8 @@ let totalMines,
     boardSize,
     cells = [],
     firstClick,
-    winner
+    winner,
+    startTime
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -40,6 +46,8 @@ const resetButton = document.getElementById('resetButton');
 const grid = document.getElementById('grid');
 const flagsLeftEl = document.querySelector('#flags-left span');
 let cellElements = null
+
+const timeEl = document.getElementById('time');
 
 /*----------------------------- Event Listeners -----------------------------*/
 
@@ -74,6 +82,9 @@ function init() {
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
 
+    startTime = document.timeline.currentTime;
+    frame(startTime);
+
     createCells();
     drawGrid()
     render();
@@ -104,7 +115,7 @@ function render() {
         cells.filter( c => c.mine ).forEach ( mine => {
             cellElements[mine.id].innerHTML = 
                 `<img src='img/Mine.ico' class='mine' id=${mine.id} />`;
-            if (mine.clear) {
+            if (mine.clear) { 
                 cellElements[mine.id].style.backgroundColor = "red";
             }
         })
@@ -149,6 +160,24 @@ function drawGrid() {
     cellElements = grid.children;
 }
 
+/*-----------------Timer Functions-------------------*/
+function frame(time) {
+    const elapsed = time - startTime;
+    const seconds = Math.round(elapsed / 1000);
+    updateTimer(seconds);
+    const targetNext = (seconds + 1) * 1000 + startTime;
+    setTimeout (
+        () => requestAnimationFrame(frame), 
+        targetNext - performance.now(),
+    );
+}
+
+function updateTimer(sec) {
+    let m = Math.floor(sec / 60)
+    let s = (sec > 59) ? sec - (m * 60) : sec;
+    timeEl.innerText = (s > 9) ? `${m}:${s}` : `${m}:0${s}`
+}
+
 /*----------------------Control Functions ------------------------------------*/
 
 function leftClick(i) {
@@ -164,13 +193,13 @@ function leftClick(i) {
 
 function rightClick(i) {
     if (cells[i].clear) return
-
+    
     cells[i].flag = !cells[i].flag;
     cells[i].render = true;
-
+    
     flagsLeft = boardInfo[boardSize].mines - cells.filter( c => c.flag ).length
     if (flagsLeft === 0) checkWin();
-
+    
     render();
 }
 
@@ -180,7 +209,7 @@ function doubleClick(i) {
     let flags = cell.adjCells.reduce( (count, adj) => {
         return (cells[adj].flag) ? count + 1 : count;
     }, 0)
-
+    
     if (flags === cell.adjMines) {
         cell.adjCells.forEach( c => clearCell(c));
         render();
@@ -217,7 +246,7 @@ function layMines(ex) {
 function getAdjCells(i) {
     let index = parseInt(i);
     let row = boardInfo[boardSize].x;
-
+    
     let candidates = [
         index - row - 1,
         index - row,
@@ -228,14 +257,14 @@ function getAdjCells(i) {
         index + row,
         index + row + 1
     ];
-
+    
     let adj = candidates.filter( n =>
         n >= 0 && n < totalCells &&
         Math.abs( (n % row) - (index % row)) <= 1 )
-
-    return adj;
-}
-
+        
+        return adj;
+    }
+    
 function setAdjMines () {
     cells.filter( c => !c.mine ).forEach( cell => {
         let mines = cell.adjCells.reduce(function (count, adj) {
@@ -265,7 +294,7 @@ function clearCell(i) {
 
 function checkWin() {
     if (flagsLeft !== 0) return;
-
+    
     if (cells.filter(c => c.mine).every( c => c.flag )) {
         winner = "player";
         cells.filter(c => !c.mine && !c.clear ).forEach( cell => {

@@ -30,8 +30,8 @@ html {
     max-width: 80vmin;
     /* mobile first - single column */
 
-    align-items: center;
     display: flex;
+    align-items: center;
     flex-direction: column;
     text-align: center;
 }
@@ -93,3 +93,8 @@ img.flag, img.mine {
 #resetButton {
     margin: 20px 0 0 0;
 }
+
+#time {
+    color: white;
+}
+
