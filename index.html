@@ -10,13 +10,15 @@
 </head>
 <body>
     <h1>Minesweeper</h1>
+    <div id="controls">
     <label for="boardSize">Difficulty</label>
-    <select id="boardSize">
-        <option value="small" selected>Easy</option>
-        <option value="medium">Medium</option>
-        <option value="large">Hard</option>
-    </select>
-    <button id="resetButton">Reset</button>
+        <select id="boardSize">
+            <option value="small" selected>Easy</option>
+            <option value="medium">Medium</option>
+            <option value="large">Hard</option>
+        </select>
+        <button id="resetButton">Reset</button>
+    </div>
     <div id=info>
         <div id=flags-left>
             <img src="img/Flag.ico">
@@ -29,5 +31,6 @@
     </div>
     <div id=grid>
     </div>
+    
 </body>
 </html>

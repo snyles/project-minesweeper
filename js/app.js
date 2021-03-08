@@ -15,9 +15,9 @@ const boardInfo = {
         mines: 30
     },
     large: {
-        x: 20,
-        y: 16,
-        mines: 70
+        x: 18,
+        y: 14,
+        mines: 60
     }
 }
 
