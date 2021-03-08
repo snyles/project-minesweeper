@@ -10,7 +10,7 @@ const boardInfo = {
         mines: 10
     },
     medium: {
-        x: 16,
+        x: 14,
         y: 12,
         mines: 30
     },
@@ -18,6 +18,11 @@ const boardInfo = {
         x: 18,
         y: 14,
         mines: 60
+    },
+    xlarge: {
+        x: 18,
+        y: 14,
+        mines: 100
     }
 }
 
