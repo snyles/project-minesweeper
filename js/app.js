@@ -45,7 +45,6 @@ const difficultySelect = document.querySelector('select');
 const resetButton = document.getElementById('resetButton');
 const grid = document.getElementById('grid');
 const flagsLeftEl = document.querySelector('#flags-left span');
-let cellElements = null
 
 const timeEl = document.getElementById('time');
 
@@ -102,21 +101,21 @@ function reset() {
 function render() {
     /*--------------------- Debug--------------------*/
     // cells.filter( c => c.mine ).forEach( m => {
-    //     cellElements[m.id].innerHTML = 
+    //     m.element.innerHTML = 
     //         `<img src='img/Mine.ico' class='mine' id=${m.id} />`
     // })
 
     // cells.filter ( c => c.adjMines ).forEach ( cell => {
-    //     cellElements[cell.id].innerText = cell.adjMines
+    //     cell.element.innerText = cell.adjMines
     // });
     /*-----------------------------------------------*/
 
     if (winner === "mines") {
         cells.filter( c => c.mine ).forEach ( mine => {
-            cellElements[mine.id].innerHTML = 
+            mine.element.innerHTML = 
                 `<img src='img/Mine.ico' class='mine' id=${mine.id} />`;
             if (mine.clear) { 
-                cellElements[mine.id].style.backgroundColor = "red";
+                mine.element.style.backgroundColor = "red";
             }
         })
         explosionSound.play();
@@ -131,10 +130,10 @@ function render() {
     
     cells.filter( c => c.render ).forEach ( cell => {
         if (cell.clear) {
-            cellElements[cell.id].style.backgroundColor = '#f3f3f3';
-            cellElements[cell.id].innerText = cell.adjMines;
+            cell.element.style.backgroundColor = '#f3f3f3';
+            cell.element.innerText = cell.adjMines;
         } else {
-            cellElements[cell.id].innerHTML = (cell.flag) ?
+            cell.element.innerHTML = (cell.flag) ?
                 `<img src='img/Flag.ico' class='flag' id=${cell.id} />` :
                 null;
         }
@@ -150,14 +149,14 @@ function drawGrid() {
 
     grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`
-    
-    for ( let i = 0; i < totalCells; i++ ) {
+
+    cells.forEach( c => {
         let el = document.createElement('div')
         el.className = 'cell';
-        el.id = i;
+        el.id = c.id;
         grid.appendChild(el);
-    }
-    cellElements = grid.children;
+        c.element = el;
+    })
 }
 
 /*-----------------Timer Functions-------------------*/
@@ -226,6 +225,7 @@ function createCells() {
         cell.render = false;
         cell.adjCells = getAdjCells(i);
         cell.adjMines = null;
+        cell.element = null;
         cells.push(cell);
     }
 }
