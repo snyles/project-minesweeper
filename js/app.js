@@ -161,11 +161,12 @@ function drawGrid() {
     grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`
 
-    cells.forEach( c => {
+    cells.forEach( cell => {
         let el = document.createElement('div')
         el.className = 'cell';
-        el.id = c.id;
-        c.element = el;
+        el.id = cell.id;
+
+        cell.element = el;
         grid.appendChild(el);
     })
 }
@@ -270,7 +271,7 @@ function getAdjCells(i) {
     
 function setAdjMines () {
     cells.filter( c => !c.mine ).forEach( cell => {
-        let mines = cell.adjCells.reduce(function (count, adj) {
+        let mines = cell.adjCells.reduce( (count, adj) => {
             return (cells[adj].mine) ? ++count : count
         }, 0)
         cell.adjMines = (mines > 0) ? mines : null;
