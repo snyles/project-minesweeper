@@ -107,7 +107,8 @@ function init() {
 
 function reset() {
     cells = [];
-    grid.innerHTML = ''
+    grid.innerHTML = '';
+    grid.className = '';
    
     init();
 }
@@ -164,8 +165,9 @@ function drawGrid() {
     let x = boardInfo[boardSize].x;
     let y = boardInfo[boardSize].y;
 
-    grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`
-    grid.style.gridTemplateRows = `repeat(${y}, 1fr)`
+    grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${y}, 1fr)`;
+    grid.classList.add(boardSize);
 
     cells.forEach( cell => {
         let el = document.createElement('div')
