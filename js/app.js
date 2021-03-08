@@ -1,7 +1,6 @@
 // TODO: get timer to stop, responsive, dress it up, directions modal
 
 
-
 /*-------------------------------- Constants --------------------------------*/
 
 const boardInfo = {
@@ -22,6 +21,18 @@ const boardInfo = {
     }
 }
 
+class Cell {
+    constructor(id) {
+        this.id = id;
+        this.mine = false;
+        this.flag = false;
+        this.clear = false;
+        this.render = false;
+        this.adjCells = getAdjCells(id);
+        this.adjMines = null;
+        this.element = null;
+    }
+} 
 
 const explosionSound = new Audio('./sound/boom.wav');
 const loseSound = new Audio('./sound/lose.wav');
@@ -44,14 +55,14 @@ let totalMines,
 const difficultySelect = document.querySelector('select');
 const resetButton = document.getElementById('resetButton');
 const grid = document.getElementById('grid');
-const flagsLeftEl = document.querySelector('#flags-left span');
 
+const flagsLeftEl = document.querySelector('#flags-left span');
 const timeEl = document.getElementById('time');
 
 /*----------------------------- Event Listeners -----------------------------*/
 
-resetButton.addEventListener('click', reset )
-difficultySelect.addEventListener('change', reset )
+resetButton.addEventListener('click', reset );
+difficultySelect.addEventListener('change', reset );
 
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
@@ -154,8 +165,8 @@ function drawGrid() {
         let el = document.createElement('div')
         el.className = 'cell';
         el.id = c.id;
-        grid.appendChild(el);
         c.element = el;
+        grid.appendChild(el);
     })
 }
 
@@ -217,15 +228,7 @@ function doubleClick(i) {
 
 function createCells() {
     for ( let i = 0; i < totalCells; i++ ) {
-        let cell = {};
-        cell.id = i;
-        cell.mine = false;
-        cell.flag = false;
-        cell.clear = false;
-        cell.render = false;
-        cell.adjCells = getAdjCells(i);
-        cell.adjMines = null;
-        cell.element = null;
+        let cell = new Cell(i);
         cells.push(cell);
     }
 }
