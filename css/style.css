@@ -67,8 +67,8 @@ h1 {
 }
 
 img.flag, img.mine {
-    width: 30px;
-    height: 30px;
+    width: 80%;
+    height: 80%;
 }
 
 #info {

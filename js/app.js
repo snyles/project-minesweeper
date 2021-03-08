@@ -57,19 +57,19 @@ difficultySelect.addEventListener('change', reset )
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     let i = parseInt(e.target.id);
-    if (firstClick || winner || isNaN(i)) { return }
+    if (firstClick || winner || isNaN(i)) return 
     rightClick(i);
 });
 
 grid.addEventListener('click', function(e) {
     let i = parseInt(e.target.id);
-    if (winner || isNaN(i)) { return };
+    if (winner || isNaN(i)) return;
     leftClick(i);
 });
 
 grid.addEventListener('dblclick', function(e) {
     let i = parseInt(e.target.id);
-    if (winner || isNaN(i)) { return };
+    if (winner || isNaN(i)) return;
     doubleClick(i);
 })
 
@@ -206,26 +206,26 @@ function rightClick(i) {
 function doubleClick(i) {
     let cell = cells[i];
     if (!cell.clear || !cell.adjMines) return
+
     let flags = cell.adjCells.reduce( (count, adj) => {
-        return (cells[adj].flag) ? count + 1 : count;
+        return (cells[adj].flag) ? ++count : count;
     }, 0)
-    
     if (flags === cell.adjMines) {
         cell.adjCells.forEach( c => clearCell(c));
-        render();
     }
+    render();
 }
 
 function createCells() {
     for ( let i = 0; i < totalCells; i++ ) {
-        let cell = {}
+        let cell = {};
         cell.id = i;
         cell.mine = false;
         cell.flag = false;
         cell.clear = false;
+        cell.render = false;
         cell.adjCells = getAdjCells(i);
         cell.adjMines = null;
-        cell.render = false;
         cells.push(cell);
     }
 }
@@ -262,8 +262,8 @@ function getAdjCells(i) {
         n >= 0 && n < totalCells &&
         Math.abs( (n % row) - (index % row)) <= 1 )
         
-        return adj;
-    }
+    return adj;
+}
     
 function setAdjMines () {
     cells.filter( c => !c.mine ).forEach( cell => {
@@ -276,17 +276,17 @@ function setAdjMines () {
 
 function clearCell(i) {
     let cell = cells[i]
-    
-    if (cell.mine && !cell.flag) {
+
+    if (cell.clear || cell.flag) return
+    if (cell.mine) {
         cell.clear = true;
         winner = "mines";
         return;
     }
-    else if (cell.clear || cell.flag) {
-        return
-    }
+
     cell.clear = true;
     cell.render = true;
+
     if (!cell.adjMines) {
         cell.adjCells.forEach( c => clearCell(c))
     }
@@ -295,7 +295,7 @@ function clearCell(i) {
 function checkWin() {
     if (flagsLeft !== 0) return;
     
-    if (cells.filter(c => c.mine).every( c => c.flag )) {
+    if (cells.filter( c => c.mine ).every( c => c.flag )) {
         winner = "player";
         cells.filter(c => !c.mine && !c.clear ).forEach( cell => {
             clearCell(cell.id);
