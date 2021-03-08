@@ -18,7 +18,7 @@ html {
   }
   
   body {
-    background-color: #333;
+    background-color: #666;
     /* Use a system font, if none are available use an available sans-sarif font */
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -34,14 +34,23 @@ html {
     align-items: center;
     flex-direction: column;
     text-align: center;
+
+    /* background-image: url('/img/sand_bg2.jpg');
+    background-position: top center;
+    background-size: cover; */
+
+    /* --primary: #750a00; */
+    --primary: #2f4858;
 }
 
 h1 {
-    margin: 30px 0;
+    margin: 2vmin 0;
+    color: var(--primary);
+    grid-area: header
 }
 
 #grid {
-    margin: 0 0 40px 0;
+    margin: 0 0 5vmin 0;
     /* width: 60vmin;
     height: 50vmin; */
     display: grid;
@@ -49,21 +58,28 @@ h1 {
     grid-template-columns: repeat(8, 1fr);
     border: solid 1px white;
     color: #000;
+    cursor: url('./img/metal_detector_cursor.png');
+    user-select: none;
     
 }
 
 
-
 #grid > .cell {
     border: solid 1px white;
-    background: #ccc;
+    background: rgba(240, 240, 240, .6);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    cursor: default;
-    user-select: none;
+
+    width: 4vmin;
+    height: 4vmin;
+}
+
+#grid > .clear {
+    background: rgba(240, 240, 240, 1);
+}
+
+#grid > div:hover {
 }
 
 img.flag, img.mine {
@@ -77,7 +93,7 @@ img.flag, img.mine {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    width: 400px;
+    width: 40vmin;
     font-size: 1.8rem;
 }
 #flags-left span {

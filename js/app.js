@@ -141,7 +141,8 @@ function render() {
     
     cells.filter( c => c.render ).forEach ( cell => {
         if (cell.clear) {
-            cell.element.style.backgroundColor = '#f3f3f3';
+            // cell.element.style.backgroundColor = '#f3f3f3';
+            cell.element.classList.add('clear');
             cell.element.innerText = cell.adjMines;
         } else {
             cell.element.innerHTML = (cell.flag) ?
