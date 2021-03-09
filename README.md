@@ -1,5 +1,9 @@
 # Minesweeper -  Unit 1 Project
 
+##Attribution
+
+Flag and Mine Icons by Martina Šmejkalová at http://www.sireasgallery.com/iconset/minesweeper/
+
 ## Wireframe
 
 https://wireframe.cc/eNtijM
@@ -75,5 +79,3 @@ https://wireframe.cc/eNtijM
     * stops if has adjacent mines
 
 
-Attribution: 
-<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
