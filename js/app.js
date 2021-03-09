@@ -43,8 +43,8 @@ const explosionSound = new Audio('./sound/boom.wav');
 const loseSound = new Audio('./sound/lose.wav');
 const winSound = new Audio('./sound/win.wav');
 const applauseSound = new Audio('./sound/applause.wav');
+const kazooSound = new Audio('./sound/kazoo.wav');
 
-let controller;
 
 /*-------------------------------- Variables --------------------------------*/
 
@@ -58,7 +58,8 @@ let totalMines,
     startTime,
     leftClicked,
     rightClicked,
-    animationFrameId
+    animationFrameId,
+    controller
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -136,6 +137,7 @@ function init() {
 }
 
 function reset() {
+    confetti.stop();
     cells = [];
     grid.innerHTML = '';
     firstClick = true;
@@ -184,9 +186,10 @@ function render() {
         }, 500);
         controller.abort();
     } else if ( winner === "player" ) {
-        console.log("you are a super player");
         winSound.play();
         applauseSound.play();
+        // kazooSound.play();
+        confetti.start();
         controller.abort();
     }
     
@@ -352,7 +355,7 @@ function checkWin() {
 
 init();
 
-/*---------TIMER FROM https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 -------Modified slightly----------------------*/
+/*---------TIMER FROM https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 -----------------------------*/
 
 function animationInterval(ms, signal, callback) {
     // Prefer currentTime, as it'll better sync animtions queued in the 
