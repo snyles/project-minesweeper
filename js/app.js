@@ -1,5 +1,5 @@
 // TODO: get timer to stop, responsive, dress it up, directions modal
-
+// import { animationInterval } from './timer.js';
 
 /*-------------------------------- Constants --------------------------------*/
 
@@ -44,6 +44,8 @@ const loseSound = new Audio('./sound/lose.wav');
 const winSound = new Audio('./sound/win.wav');
 const applauseSound = new Audio('./sound/applause.wav');
 
+let controller;
+
 /*-------------------------------- Variables --------------------------------*/
 
 let totalMines,
@@ -55,7 +57,8 @@ let totalMines,
     winner,
     startTime,
     leftClicked,
-    rightClicked
+    rightClicked,
+    animationFrameId
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -117,9 +120,15 @@ function init() {
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
-
-    startTime = document.timeline.currentTime;
-    frame(startTime);
+   
+    //timer function
+    controller = new AbortController();
+    // let start = document.timeline ? document.timeline.currentTime : 
+    //     performance.now();
+    animationInterval(1000, controller.signal, time => {
+        console.log(time);
+        updateTimer(time);
+    });
 
     createCells();
     drawGrid()
@@ -129,8 +138,22 @@ function init() {
 function reset() {
     cells = [];
     grid.innerHTML = '';
+    firstClick = true;
+    winner = null;
+    boardSize = difficultySelect.value;
+    totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
+    flagsLeft = boardInfo[boardSize].mines
+
+    controller.abort();
+    controller = new AbortController();
+    animationInterval(1000, controller.signal, time => {
+        console.log(time);
+        updateTimer(time);
+    });
    
-    init();
+    createCells();
+    drawGrid()
+    render();
 }
 
 /*------------------- View Functions -----------------------------------------*/
@@ -159,10 +182,12 @@ function render() {
         setTimeout(function() {
             loseSound.play();
         }, 500);
+        controller.abort();
     } else if ( winner === "player" ) {
         console.log("you are a super player");
         winSound.play();
         applauseSound.play();
+        controller.abort();
     }
     
     cells.filter( c => c.render ).forEach ( cell => {
@@ -199,18 +224,9 @@ function drawGrid() {
 }
 
 /*-----------------Timer Functions-------------------*/
-function frame(time) {
-    const elapsed = time - startTime;
-    const seconds = Math.round(elapsed / 1000);
-    updateTimer(seconds);
-    const targetNext = (seconds + 1) * 1000 + startTime;
-    setTimeout (
-        () => requestAnimationFrame(frame), 
-        targetNext - performance.now(),
-    );
-}
 
-function updateTimer(sec) {
+function updateTimer(seconds) {
+    let sec = Math.floor(seconds / 1000);
     let m = Math.floor(sec / 60)
     let s = (sec > 59) ? sec - (m * 60) : sec;
     timeEl.innerText = (s > 9) ? `${m}:${s}` : `${m}:0${s}`
@@ -335,3 +351,32 @@ function checkWin() {
 }
 
 init();
+
+/*---------TIMER FROM https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 -------Modified slightly----------------------*/
+
+function animationInterval(ms, signal, callback) {
+    // Prefer currentTime, as it'll better sync animtions queued in the 
+    // same frame, but if it isn't supported, performance.now() is fine.
+
+    const start = document.timeline ? document.timeline.currentTime : performance.now();
+  
+    function frame(timestamp) {
+      if (signal.aborted) return;
+      callback(timestamp);
+      scheduleFrame(timestamp);
+    }
+  
+    function scheduleFrame(time) {
+      const elapsed = time - start;
+      const roundedElapsed = Math.round(elapsed / ms) * ms;
+      const targetNext = start + roundedElapsed + ms;
+      const delay = targetNext - performance.now();
+      setTimeout(() => {
+          animationFrameId = requestAnimationFrame(frame)
+      }, delay);
+    }
+  
+    scheduleFrame(start);
+  }
+
+  
