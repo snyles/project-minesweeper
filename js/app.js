@@ -129,7 +129,6 @@ function init() {
 function reset() {
     cells = [];
     grid.innerHTML = '';
-    grid.className = '';
    
     init();
 }
@@ -168,7 +167,6 @@ function render() {
     
     cells.filter( c => c.render ).forEach ( cell => {
         if (cell.clear) {
-            // cell.element.style.backgroundColor = '#f3f3f3';
             cell.element.classList.add('clear');
             cell.element.innerText = cell.adjMines;
         } else {
@@ -188,7 +186,7 @@ function drawGrid() {
 
     grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`;
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`;
-    grid.classList.add(boardSize);
+    grid.className = boardSize;
 
     cells.forEach( cell => {
         let el = document.createElement('div')

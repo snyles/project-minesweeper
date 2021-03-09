@@ -18,7 +18,7 @@ html {
   }
   
   body {
-    background-color: #666;
+    background-color: var(--background);
     /* Use a system font, if none are available use an available sans-sarif font */
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -35,7 +35,11 @@ html {
     justify-content: flex-start;
     text-align: center;
 
-    --primary: #2f4858;
+    --primary: #D62828;
+    --background: #003049;
+    --board: #FCBF49;
+    --clear: #EAE2B7;
+    --accent: #F77F00;
 }
 
 select {
@@ -69,9 +73,8 @@ label, button, option, select {
 }
 
 #grid > .cell {
-    border: solid 1px rgba( 255, 255, 255, 1);
-    /* background: rgba(240, 240, 240, .5); */
-    background: #ccc;
+    border: solid 1px white;
+    background: var(--board);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,7 +95,7 @@ label, button, option, select {
 }
 
 #grid > .clear {
-    background: #f3f3f3;
+    background: var(--clear);
 }
 
 /* #grid > div:hover {
@@ -110,12 +113,13 @@ img.flag, img.mine {
     flex-direction: column-reverse;
     align-items: center;
     justify-content: space-evenly;
-    width: 80vmin;
+    width: 60vmin;
     font-size: 2rem;
 }
 #flags-left span {
-    font-size: 2rem;
-    color: white;
+    font-size: 2.2rem;
+    color: var(--accent);
+    /* font-weight: bold; */
 }
 
 #flags-left > img {
@@ -136,7 +140,7 @@ img.flag, img.mine {
 }
 
 #time {
-    color: white;
+    color: var(--accent);
 }
 
 @media only screen and (min-width: 768px) {
