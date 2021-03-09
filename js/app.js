@@ -53,7 +53,9 @@ let totalMines,
     cells = [],
     firstClick,
     winner,
-    startTime
+    startTime,
+    leftClicked,
+    rightClicked
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -86,6 +88,25 @@ grid.addEventListener('dblclick', function(e) {
     let i = parseInt(e.target.id);
     if (winner || isNaN(i)) return;
     doubleClick(i);
+})
+
+grid.addEventListener('mousedown', function(e) {
+    if (e.button === 0) leftClicked = true; 
+    if (e.button === 2) rightClicked = true; 
+})
+
+grid.addEventListener('mouseup', function(e) {
+    if (rightClicked && leftClicked) {
+        let i = parseInt(e.target.id);
+        if (winner || isNaN(i)) return;
+        doubleClick(i);
+    }
+    if (e.button === 0) {
+        leftClicked = false;
+    }
+    if (e.button === 2) {
+        rightClicked = false;
+    }
 })
 
 /*-------------------------------- Functions --------------------------------*/
