@@ -43,7 +43,6 @@ const explosionSound = new Audio('./sound/boom.wav');
 const loseSound = new Audio('./sound/lose.wav');
 const winSound = new Audio('./sound/win.wav');
 const applauseSound = new Audio('./sound/applause.wav');
-const kazooSound = new Audio('./sound/kazoo.wav');
 
 
 /*-------------------------------- Variables --------------------------------*/
@@ -58,8 +57,8 @@ let totalMines,
     startTime,
     leftClicked,
     rightClicked,
-    animationFrameId,
-    controller
+    controller,
+    timer
 
 /*------------------------ Cached Element References ------------------------*/
 
@@ -118,6 +117,7 @@ grid.addEventListener('mouseup', function(e) {
 function init() {
     firstClick = true;
     winner = null;
+    timer = 0;
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
@@ -127,8 +127,8 @@ function init() {
     // let start = document.timeline ? document.timeline.currentTime : 
     //     performance.now();
     animationInterval(1000, controller.signal, time => {
-        console.log(time);
-        updateTimer(time);
+        timer += time;
+        updateTimer(timer);
     });
 
     createCells();
@@ -142,6 +142,9 @@ function reset() {
     grid.innerHTML = '';
     firstClick = true;
     winner = null;
+    timer = 0;
+    updateTimer(timer);
+    
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
@@ -149,8 +152,8 @@ function reset() {
     controller.abort();
     controller = new AbortController();
     animationInterval(1000, controller.signal, time => {
-        console.log(time);
-        updateTimer(time);
+        timer += time;
+        updateTimer(timer);
     });
    
     createCells();
@@ -365,7 +368,7 @@ function animationInterval(ms, signal, callback) {
   
     function frame(timestamp) {
       if (signal.aborted) return;
-      callback(timestamp);
+      callback(1000);
       scheduleFrame(timestamp);
     }
   
@@ -374,9 +377,7 @@ function animationInterval(ms, signal, callback) {
       const roundedElapsed = Math.round(elapsed / ms) * ms;
       const targetNext = start + roundedElapsed + ms;
       const delay = targetNext - performance.now();
-      setTimeout(() => {
-          animationFrameId = requestAnimationFrame(frame)
-      }, delay);
+      setTimeout(() => requestAnimationFrame(frame), delay);
     }
   
     scheduleFrame(start);
