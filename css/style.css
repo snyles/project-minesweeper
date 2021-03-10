@@ -152,7 +152,6 @@ img.flag, img.mine {
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
-    margin-top: 1vmin;
 }
 
 #difficulty {
@@ -223,7 +222,7 @@ img.flag, img.mine {
     }
 
     h1 {
-        margin: 0 0 2vmin 0;
+        margin: 0 0 1vmin 0;
         padding: 4vmin 0 0 0;
         font-size: 6rem;
     }
