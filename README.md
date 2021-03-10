@@ -1,8 +1,8 @@
 # Minesweeper -  Unit 1 Project
 
-##Attribution
+## Attribution
 
-Flag and Mine Icons by Martina Šmejkalová at http://www.sireasgallery.com/iconset/minesweeper/
+Flag and Mine Icons by Martina Šmejkalová at http://www.sireasgallery.com/iconset/minesweeper/d
 
 ## Wireframe
 

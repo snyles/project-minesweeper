@@ -68,11 +68,22 @@ const grid = document.getElementById('grid');
 
 const flagsLeftEl = document.querySelector('#flags-left span');
 const timeEl = document.getElementById('time');
+const helpIcon = document.getElementById('help');
+const helpModal = document.getElementById('helpModal');
 
 /*----------------------------- Event Listeners -----------------------------*/
 
 resetButton.addEventListener('click', reset );
 difficultySelect.addEventListener('change', reset );
+
+helpIcon.addEventListener('click', function() {
+    helpModal.style.display = "flex";
+    helpModal.addEventListener('click', function() {
+        helpModal.style.display = "none";
+        helpModal.removeEventListener('click');
+    })
+
+})
 
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
@@ -177,12 +188,10 @@ function render() {
 
     if (winner === "mines") {
         cells.filter( c => c.mine ).forEach ( mine => {
-            mine.element.innerHTML = 
+            mine.element.innerHTML = (mine.clear) ?
+                `<img src='img/MineRed.ico' class='mine' id=${mine.id} />` :
                 `<img src='img/Mine.ico' class='mine' id=${mine.id} />`;
-            if (mine.clear) { 
-                mine.element.style.backgroundColor = "red";
-            }
-        })
+            })
         explosionSound.play();
         setTimeout(function() {
             loseSound.play();
