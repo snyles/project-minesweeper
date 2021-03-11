@@ -63,15 +63,26 @@ const grid = document.getElementById('grid');
 const flagsLeftEl = document.querySelector('#flags-left span');
 const timeEl = document.getElementById('time');
 const helpIcon = document.getElementById('help');
-const helpModal = document.getElementById('helpModal');
+const modal = document.getElementById('modal');
+
+const messageText = document.getElementById('messageText');
+const messageH1 = document.querySelector('#messageText h1');
+const messageP = document.querySelector('#messageText p');
+const messageReset = document.getElementById('modalReset');
 
 /*----------------------------- Event Listeners -----------------------------*/
 
 resetButton.addEventListener('click', reset );
+messageReset.addEventListener('click', reset );
 difficultySelect.addEventListener('change', reset );
 
-helpIcon.addEventListener('click', () => helpModal.style.display = "flex" );
-helpModal.addEventListener('click', () => helpModal.style.display = "none" );
+modal.addEventListener('click', () => {
+    toggleModal();
+});
+
+helpIcon.addEventListener('click', () => {
+   toggleModal("help");
+});
 
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
@@ -170,24 +181,9 @@ function render() {
     // });
     /*-----------------------------------------------*/
 
-    if (winner === "mines") {
-        cells.filter( c => c.mine ).forEach ( mine => {
-            mine.element.innerHTML = (mine.clear) ?
-                `<img src='img/MineRed.ico' class='mine' />` :
-                `<img src='img/Mine.ico' class='mine' />`;
-            })
-        explosionSound.play();
-        setTimeout(function() {
-            loseSound.play();
-        }, 500);
-        controller.abort();
-    } else if ( winner === "player" ) {
-        winSound.play();
-        applauseSound.play();
-        confetti.start();
-        controller.abort();
-    }
-    
+    if (winner === "mines") playerLoses();
+    else if ( winner === "player" ) playerWins();   
+
     cells.filter( c => c.render ).forEach ( cell => {
         if (cell.clear) {
             cell.element.classList.add('clear');
@@ -221,13 +217,72 @@ function drawGrid() {
     })
 }
 
+function playerWins() {
+    winSound.play();
+    applauseSound.play();
+    confetti.start();
+
+    controller.abort();
+    toggleModal("win");
+}
+
+function playerLoses() {
+    cells.filter( c => c.mine ).forEach ( mine => {
+        mine.element.innerHTML = (mine.clear) ?
+            `<img src='img/MineRed.ico' class='mine' />` :
+            `<img src='img/Mine.ico' class='mine' />`;
+        })
+    explosionSound.play();
+    setTimeout(function() {
+        loseSound.play();
+    }, 500);
+    controller.abort();
+
+    setTimeout( () =>
+        toggleModal("lose")
+    , 1000);
+}
+
+function toggleModal(content) {
+    modal.style.display = (modal.style.display === "flex") ?
+        "none" : "flex";
+    if (content === "help") {
+        helpText.style.display = "block";
+        messageText.style.display = "none";
+    } else if (content === "win") {
+        let timeStr = secondsToMS(timer);
+        messageText.style.display = "block";
+        helpText.style.display = "none";
+        messageH1.innerText = "You Win!";
+        messageH1.style.color = "#a7db72";
+        messageP.innerHTML = `It only took you <strong>${timeStr}</strong>!`;
+        messageReset.innerText = "Play Again";
+    } else if (content === "lose") {
+        let minesLeft = cells.filter( c => c.mine && !c.flag ).length;
+        messageText.style.display = "block";
+        helpText.style.display = "none";
+        messageH1.innerText = "You Lost!";
+        messageH1.style.color = "var(--primary)"
+        messageP.innerHTML = `There were only <strong>${minesLeft}</strong> mines left`;
+        messageReset.innerText = "Try Again";
+    }
+    else {
+        messageText.style.display = "none";
+        helpText.style.display = "none";
+    }
+}
 /*-----------------Render Timer Functions-------------------*/
 
 function updateTimer(seconds) {
+    let tstring = secondsToMS(seconds);
+    timeEl.innerText = tstring;
+}
+
+function secondsToMS(seconds) {
     let sec = Math.floor(seconds / 1000);
     let m = Math.floor(sec / 60)
     let s = (sec > 59) ? sec - (m * 60) : sec;
-    timeEl.innerText = (s > 9) ? `${m}:${s}` : `${m}:0${s}`
+    return (s > 9) ? `${m}:${s}` : `${m}:0${s}`
 }
 
 /*----------------------Control Functions ------------------------------------*/

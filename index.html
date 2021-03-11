@@ -11,7 +11,7 @@
     <title>Minesweeper</title>
 </head>
 <body>
-    <h1>MineSweeper</h1>
+    <h1 id="title">MineSweeper</h1>
     <div id="controls">
         <img id="help" src="./img/help.png" />
         <div id="difficulty">
@@ -41,7 +41,12 @@
     <div id="copy">
         <p>&copy; Copyright 2021 Sean Niles</p>
     </div>
-    <div id="helpModal">
+    <div id="modal">
+        <div id="messageText">
+            <h1></h1>
+            <p></p>
+            <button id="modalReset">Play Again</button>
+        </div>
         <div id="helpText">
             <ul>
                 <li><strong>Left Click</strong> to uncover a square. </li>

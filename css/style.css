@@ -50,7 +50,7 @@ select {
 label {
     text-shadow: black 2px 2px 5px;
 }
-h1 {
+#title {
     display: flex;
     margin: 0 0 1vmin 0;
     padding: 1vmin 0 0 0;
@@ -181,7 +181,7 @@ img.flag, img.mine {
     flex-direction: column;
 }
 
-#helpModal {
+#modal {
     display: none;
     background-color: rgba(200, 200, 200, .6);
     width: 100vw;
@@ -194,11 +194,13 @@ img.flag, img.mine {
     text-align: left;
 }
 
-#helpText {
+#helpText, #messageText {
+    display: none;
     width: 80vw;
+    max-width: 800px;
     font-size: 4vmin;
     line-height: 5vmin;
-    background-color: rgba(240, 240, 240, 1);
+    background-color: rgba(255, 255, 255, .8);
     border-radius: 10px;
     color: #333;
     padding: 4rem;
@@ -220,6 +222,22 @@ img.flag, img.mine {
 #helpText strong {
     color: var(--primary);
 }
+
+#messageText {
+    text-align: center;
+    color: #333;
+}
+
+#messageText h1 {
+    margin: 2px 0;
+    padding: 0;
+}
+
+#messageText p {
+    margin: 2rem;
+}
+
+
 
 @media only screen and (min-width: 768px) {
 
