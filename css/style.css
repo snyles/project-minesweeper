@@ -229,6 +229,7 @@ img.flag, img.mine {
 }
 
 #messageText h1 {
+    font-family: 'RocknRoll One', sans-serif;
     margin: 2px 0;
     padding: 0;
 }

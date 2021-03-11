@@ -98,5 +98,4 @@ Obj cell = {
 * ~~Implement timer~~
   * Stops when player wins or loses, restarts with new game
 * ~~Instructions modal~~
-* Win and Lose message modal, includes game time
-
+* ~~Win and Lose message modal, includes game time~~

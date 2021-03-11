@@ -64,7 +64,6 @@ const flagsLeftEl = document.querySelector('#flags-left span');
 const timeEl = document.getElementById('time');
 const helpIcon = document.getElementById('help');
 const modal = document.getElementById('modal');
-
 const messageText = document.getElementById('messageText');
 const messageH1 = document.querySelector('#messageText h1');
 const messageP = document.querySelector('#messageText p');
@@ -169,17 +168,7 @@ function reset() {
 
 /*------------------- View Functions -----------------------------------------*/
 
-function render() {
-    /*--------------------- Debug--------------------*/
-    // cells.filter( c => c.mine ).forEach( m => {
-    //     m.element.innerHTML = 
-    //         `<img src='img/Mine.ico' class='mine' id=${m.id} />`
-    // })
-
-    // cells.filter ( c => c.adjMines ).forEach ( cell => {
-    //     cell.element.innerText = cell.adjMines
-    // });
-    /*-----------------------------------------------*/
+function render() { 
 
     if (winner === "mines") playerLoses();
     else if ( winner === "player" ) playerWins();   
@@ -223,7 +212,9 @@ function playerWins() {
     confetti.start();
 
     controller.abort();
-    toggleModal("win");
+    setTimeout( () => {
+        toggleModal("win")
+    }, 1500);
 }
 
 function playerLoses() {
@@ -240,7 +231,7 @@ function playerLoses() {
 
     setTimeout( () =>
         toggleModal("lose")
-    , 1000);
+    , 1500);
 }
 
 function toggleModal(content) {
@@ -250,7 +241,7 @@ function toggleModal(content) {
         helpText.style.display = "block";
         messageText.style.display = "none";
     } else if (content === "win") {
-        let timeStr = secondsToMS(timer);
+        let timeStr = secondsToString(timer);
         messageText.style.display = "block";
         helpText.style.display = "none";
         messageH1.innerText = "You Win!";
@@ -274,11 +265,11 @@ function toggleModal(content) {
 /*-----------------Render Timer Functions-------------------*/
 
 function updateTimer(seconds) {
-    let tstring = secondsToMS(seconds);
+    let tstring = secondsToString(seconds);
     timeEl.innerText = tstring;
 }
 
-function secondsToMS(seconds) {
+function secondsToString(seconds) {
     let sec = Math.floor(seconds / 1000);
     let m = Math.floor(sec / 60)
     let s = (sec > 59) ? sec - (m * 60) : sec;
@@ -430,5 +421,3 @@ function animationInterval(ms, signal, callback) {
 
     scheduleFrame(start);
 }
-
-  
