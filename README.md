@@ -1,8 +1,19 @@
-# Minesweeper -  Unit 1 Project
+# Minesweeper
+
+## Objective;
+This humble recreation of the legendary Minesweeper game seeks to capture the glory of one the best free games bundled with Windows™ that I played whenever bored at school.
+
+## Getting Started
+
+### [Play MineSweeper Here!](https://snyles-minesweeper.surge.sh/)
+
+For instructions, click on the Help icon ![Help Icon](https://github.com/snyles/project-minesweeper/raw/main/img/help.png) above the game board.
+
+Change the game difficulty with the dropdown Difficulty selector and start over by clicking the Reset button.
 
 ## Attribution
 
-Flag and Mine Icons by Martina Šmejkalová at http://www.sireasgallery.com/iconset/minesweeper/d
+Flag and Mine Icons by Martina Šmejkalová at http://www.sireasgallery.com/iconset/minesweeper/
 
 ## Wireframe
 

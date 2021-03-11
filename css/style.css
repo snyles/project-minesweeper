@@ -128,6 +128,16 @@ img.flag, img.mine {
     font-size: 2rem;
     text-shadow: black 2px 2px 5px;
 }
+
+#flags-left {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+#flags-left > * {
+    margin: 0 5px;
+}
 #flags-left span {
     font-size: 2.5rem;
     color: var(--accent);
@@ -160,8 +170,9 @@ img.flag, img.mine {
     flex-direction: column;
 }
 
-#time {
+.time {
     color: var(--accent);
+    font-size: 2.5rem;
 }
 
 #copy {
