@@ -41,7 +41,6 @@ const loseSound = new Audio('./sound/lose.wav');
 const winSound = new Audio('./sound/win.wav');
 const applauseSound = new Audio('./sound/applause.wav');
 
-
 /*-------------------------------- Variables --------------------------------*/
 
 let flagsLeft,
@@ -64,6 +63,7 @@ const flagsLeftEl = document.querySelector('#flags-left span');
 const timeEl = document.getElementById('time');
 const helpIcon = document.getElementById('help');
 const modal = document.getElementById('modal');
+const helpText = document.getElementById('helpText');
 const messageText = document.getElementById('messageText');
 const messageH1 = document.querySelector('#messageText h1');
 const messageP = document.querySelector('#messageText p');
@@ -75,10 +75,7 @@ resetButton.addEventListener('click', reset );
 messageReset.addEventListener('click', reset );
 difficultySelect.addEventListener('change', reset );
 
-modal.addEventListener('click', () => {
-    toggleModal();
-});
-
+modal.addEventListener('click', toggleModal);
 helpIcon.addEventListener('click', () => {
    toggleModal("help");
 });
@@ -126,7 +123,7 @@ function init() {
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
    
-    // timer function
+    // start timer
     timer = 0;
     controller = new AbortController();
     animationInterval(1000, controller.signal, time => {
@@ -169,11 +166,10 @@ function reset() {
 /*------------------- View Functions -----------------------------------------*/
 
 function render() { 
-
     if (winner === "mines") playerLoses();
     else if ( winner === "player" ) playerWins();   
 
-    cells.filter( c => c.render ).forEach ( cell => {
+    cells.filter( c => c.render ).forEach( cell => {
         if (cell.clear) {
             cell.element.classList.add('clear');
             cell.element.innerText = cell.adjMines;
@@ -197,7 +193,7 @@ function drawGrid() {
     grid.className = boardSize;
 
     cells.forEach( cell => {
-        let el = document.createElement('div')
+        let el = document.createElement('div');
         el.className = 'cell';
         el.id = cell.id;
 
@@ -228,7 +224,7 @@ function playerLoses() {
         loseSound.play();
     }, 500);
     controller.abort();
-
+    
     setTimeout( () =>
         toggleModal("lose")
     , 1500);
@@ -290,12 +286,12 @@ function leftClick(i) {
 }
 
 function rightClick(i) {
-    if (cells[i].clear) return
+    if (cells[i].clear) return;
     
     cells[i].flag = !cells[i].flag;
     cells[i].render = true;
     
-    flagsLeft = boardInfo[boardSize].mines - cells.filter( c => c.flag ).length
+    flagsLeft = boardInfo[boardSize].mines - cells.filter( c => c.flag ).length;
     if (flagsLeft === 0) checkWin();
     
     render();
@@ -386,7 +382,7 @@ function clearCell(i) {
 function checkWin() {
     if (flagsLeft !== 0) return;
     
-    if (cells.filter( c => c.mine ).every( c => c.flag )) {
+    if (cells.filter( c => c.flag ).every( c => c.mine )) {
         winner = "player";
         cells.filter(c => !c.mine && !c.clear ).forEach( cell => {
             clearCell(cell.id);

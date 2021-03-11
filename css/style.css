@@ -264,6 +264,18 @@ img.flag, img.mine {
     margin: 2rem;
 }
 
+#modal > div {
+    position: relative;
+}
+
+span.ecks {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 4rem;
+    color: #999;
+    user-select: none;
+}
 
 
 @media only screen and (min-width: 768px) {
