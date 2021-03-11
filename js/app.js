@@ -64,7 +64,6 @@ let totalMines,
 const difficultySelect = document.querySelector('select');
 const resetButton = document.getElementById('resetButton');
 const grid = document.getElementById('grid');
-
 const flagsLeftEl = document.querySelector('#flags-left span');
 const timeEl = document.getElementById('time');
 const helpIcon = document.getElementById('help');

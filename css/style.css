@@ -126,7 +126,7 @@ img.flag, img.mine {
     justify-content: space-evenly;
     width: 60vmin;
     font-size: 2rem;
-    text-shadow: black 1px 1px 5px;
+    text-shadow: black 2px 2px 5px;
 }
 #flags-left span {
     font-size: 2.5rem;
@@ -183,7 +183,7 @@ img.flag, img.mine {
 }
 
 #helpText {
-    width: 80vmin;
+    width: 70vmin;
     font-size: 2.5rem;
     background-color: rgba(240, 240, 240, 1);
     border-radius: 10px;
