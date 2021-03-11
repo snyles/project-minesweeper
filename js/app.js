@@ -125,12 +125,12 @@ grid.addEventListener('mouseup', function(e) {
 function init() {
     firstClick = true;
     winner = null;
-    timer = 0;
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
    
-    //timer function
+    // timer function
+    timer = 0;
     controller = new AbortController();
     animationInterval(1000, controller.signal, time => {
         timer += time;
@@ -148,14 +148,15 @@ function reset() {
     grid.innerHTML = '';
     firstClick = true;
     winner = null;
-    timer = 0;
-    updateTimer(timer);
-    
+
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
 
-    //timer
+    // restart timer
+    timer = 0;
+    updateTimer(timer);
+
     controller.abort();
     controller = new AbortController();
     animationInterval(1000, controller.signal, time => {
@@ -185,8 +186,8 @@ function render() {
     if (winner === "mines") {
         cells.filter( c => c.mine ).forEach ( mine => {
             mine.element.innerHTML = (mine.clear) ?
-                `<img src='img/MineRed.ico' class='mine' id=${mine.id} />` :
-                `<img src='img/Mine.ico' class='mine' id=${mine.id} />`;
+                `<img src='img/MineRed.ico' class='mine' />` :
+                `<img src='img/Mine.ico' class='mine' />`;
             })
         explosionSound.play();
         setTimeout(function() {
@@ -362,7 +363,9 @@ function checkWin() {
 
 init();
 
-/*---------TIMER FROM https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 -----------------------------*/
+
+
+/*---https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 --*/
 
 function animationInterval(ms, signal, callback) {
     // Prefer currentTime, as it'll better sync animtions queued in the 

@@ -145,6 +145,7 @@ img.flag, img.mine {
 
 #help {
     margin: 0 30px 0 0;
+    cursor: pointer;
 }
 
 #controls {
@@ -189,18 +190,26 @@ img.flag, img.mine {
     border-radius: 10px;
     color: #333;
     line-height: 3.5rem;
-    padding: 1rem;
+    padding: 4rem;
 }
+
 #helpText ul {
-    list-style-type:square;
+    list-style-type: square;
+    margin: 0;
 }
+
 #helpText li {
     margin: 0 0 15px 0;
+}
+
+#helpText li::marker {
+    color: #333;
 }
 
 #helpText strong {
     color: var(--primary);
 }
+
 @media only screen and (min-width: 768px) {
 
     #grid {
