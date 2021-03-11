@@ -382,7 +382,7 @@ function clearCell(i) {
 function checkWin() {
     if (flagsLeft !== 0) return;
     
-    if (cells.filter( c => c.flag ).every( c => c.mine )) {
+    if (cells.filter( c => c.mine ).every( c => c.flag )) {
         winner = "player";
         cells.filter(c => !c.mine && !c.clear ).forEach( cell => {
             clearCell(cell.id);
@@ -393,7 +393,7 @@ function checkWin() {
 init();
 
 
-/*---https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 --*/
+/*------------------------Adapted from-https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 ------------------------*/
 
 function animationInterval(ms, signal, callback) {
     // Prefer currentTime, as it'll better sync animtions queued in the 
