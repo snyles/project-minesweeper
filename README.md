@@ -19,9 +19,9 @@ Change the game difficulty with the dropdown Difficulty selector and start over 
 
 ## Technologies Used
 
-* Vanilla Javascript
-* CSS
-* HTML
+* Vanilla Javascript ES6
+* CSS3
+* HTML5
 * Git
   
   
