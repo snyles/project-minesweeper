@@ -195,12 +195,12 @@ img.flag, img.mine {
 }
 
 #helpText {
-    width: 70vmin;
-    font-size: 2.5rem;
+    width: 80vw;
+    font-size: 4vmin;
+    line-height: 5vmin;
     background-color: rgba(240, 240, 240, 1);
     border-radius: 10px;
     color: #333;
-    line-height: 3.5rem;
     padding: 4rem;
 }
 
@@ -245,5 +245,10 @@ img.flag, img.mine {
         margin: 0 0 1vmin 0;
         padding: 4vmin 0 0 0;
         font-size: 6rem;
+    }
+
+    #helpText {
+        font-size: 2.5rem;
+        line-height: 3.5rem;
     }
 }

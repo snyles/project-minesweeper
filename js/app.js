@@ -1,6 +1,3 @@
-// TODO: get timer to stop, responsive, dress it up, directions modal
-// import { animationInterval } from './timer.js';
-
 /*-------------------------------- Constants --------------------------------*/
 
 const boardInfo = {
@@ -47,13 +44,12 @@ const applauseSound = new Audio('./sound/applause.wav');
 
 /*-------------------------------- Variables --------------------------------*/
 
-let totalMines,
-    flagsLeft,
+let flagsLeft,
     totalCells,
     boardSize,
     cells = [],
-    firstClick,
     winner,
+    firstClick,
     leftClicked,
     rightClicked,
     controller,
@@ -74,13 +70,8 @@ const helpModal = document.getElementById('helpModal');
 resetButton.addEventListener('click', reset );
 difficultySelect.addEventListener('change', reset );
 
-helpIcon.addEventListener('click', function() {
-    helpModal.style.display = "flex"; 
-})
-helpModal.addEventListener('click', function() {
-    helpModal.style.display = "none";
-});
-
+helpIcon.addEventListener('click', () => helpModal.style.display = "flex" );
+helpModal.addEventListener('click', () => helpModal.style.display = "none" );
 
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
@@ -112,12 +103,8 @@ grid.addEventListener('mouseup', function(e) {
         if (winner || isNaN(i)) return;
         doubleClick(i);
     }
-    if (e.button === 0) {
-        leftClicked = false;
-    }
-    if (e.button === 2) {
-        rightClicked = false;
-    }
+    if (e.button === 0) leftClicked = false;
+    if (e.button === 2) rightClicked = false;
 })
 
 /*-------------------------------- Functions --------------------------------*/
@@ -146,9 +133,9 @@ function reset() {
     confetti.stop();
     cells = [];
     grid.innerHTML = '';
+
     firstClick = true;
     winner = null;
-
     boardSize = difficultySelect.value;
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
@@ -362,7 +349,6 @@ function checkWin() {
 }
 
 init();
-
 
 
 /*---https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95 --*/

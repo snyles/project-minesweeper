@@ -1,7 +1,7 @@
 # Minesweeper
 
-## Objective;
-This humble recreation of the legendary Minesweeper game seeks to capture the glory of one the best free games bundled with Windows™ that I played whenever bored at school.
+## Objective
+This humble recreation of the legendary Minesweeper game seeks to capture the glory of one the best free games bundled with Windows™ that I played whenever I was bored at school.
 
 ## Getting Started
 
@@ -11,82 +11,92 @@ For instructions, click on the Help icon ![Help Icon](https://github.com/snyles/
 
 Change the game difficulty with the dropdown Difficulty selector and start over by clicking the Reset button.
 
+## Screenshots
+
+![Screenshot 1](https://raw.githubusercontent.com/snyles/project-minesweeper/main/img/screenshots/MS-Screenshot1.png)
+![Screenshot 2](https://raw.githubusercontent.com/snyles/project-minesweeper/main/img/screenshots/MS-Screenshot2.png)
+
+
+## Technologies Used
+
+* Vanilla Javascript
+* CSS
+* HTML
+* Git
+  
+  
 ## Attribution
 
-Flag and Mine Icons by Martina Šmejkalová at http://www.sireasgallery.com/iconset/minesweeper/
+* Flag and Mine Icons by [Martina Šmejkalová](http://www.sireasgallery.com/iconset/minesweeper/)
+* Confetti.js from [MathuSum Mut](https://github.com/mathusummut/confetti.js/)
+* Javascript counter function  adapted from [Jake Archibald](https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95)
+* Sound effects from [Mixkit.co](https://mixkit.co/)
 
 ## Wireframe
 
 https://wireframe.cc/eNtijM
 
-![Minesweeper Wireframe](https://raw.githubusercontent.com/snyles/project-minesweeper/main/img/minesweep-wire.png)
+![Minesweeper Wireframe](https://raw.githubusercontent.com/snyles/project-minesweeper/main/img/screenshots/minesweep-wire.png)
+
 
 ## Pseudocode
 
-* data structure hold value of cells
-  * values
-    * mine
-    * flag
-    * cleared
-    * uncleared
-    * number
-  
-  * array of cells **model**
-  ```
-  object cell = {
-      index: i
-      cleared: true/false
-      flagged: true/false
-      mine: true/false
-  }
-  ```
-  * number of adjacent mines?
-  * function: this.explode?
-  * store adjacent cell list in each cell obj, easy retrieval? 
+* Draw the board based on the difficulty selected by the user. Higher difficulty means a bigger board with more mines
+* Left clicking reveals the contents of the cell
+  * If the cell contains a mine, the player loses
+  * If the cell has mines adjacent to it, the number of adjacent mines appears in the cell
+  * If the cell does not have any adjacent mines, reveal the surrounding cells recursively
+* Right clicking marks a cell with a flag or removes a flag
+* Double left clicking or clicking both mouse buttons on a cell reveals the cells adjacent to the cell clicked
+  * Only happens if the player has marked as many flags as there are mines adjacent to the cell
+* The player wins when every cell containing a mine is marked by a flag
 
-* other variables
-  * total mines, flags remaining
-  * timer?
- 
+### Model
 
-* algorithm for retreiving value of adjacent cells
-  * based on board size
-    * cell above cell index x = x - boardwidth
-    * cell below x + boardwidth, etc
-  * check contents of adjacent cells
+* Array of cell objects created at start of game
+```
+Obj cell = {
+  id: int,
+  mine: boolean,
+  flag: boolean,
+  clear: boolean,
+  render: boolean,
+  adjCells: array of adjacent cell ids,
+  adjMines: int, number of adjacent mines
+}
+```
 
+### Control
 
-* render function **view**
-  * css classes for state of cells
-  * buttons?
+* Functions for Right click, left click, double click
+* State variables such as:
+  * flagsLeft, boardSize, winner, etc.
+* Update data in cells array based on user action
 
-* Create board grid in css
-  * board size changes with difficulty?
-    * dropdown
-    * implement smallest first, make scalable
-  * mobile first? 
+* Helper functions
+  * Create cell objects and array at start of game
+  * Retrieve adjacent cell ids given a cell id
+  * Randomly place mines in cells
+  * Determine number of mines adjacent to given cell
+  * Clear a cell function, calls itself recursively
+  * Check for win, all mines marked with flag
 
 
-* mouseclick event **control**
-  * right click
-    * reveal square
-    * bomb? = explode.exe
-  * left click
-    * mark flag, remove flag
-  * double mouseclick
-    * reveal surrounding squares if safe, marked, number logic
+### View
 
-  * functions that update model based on clicks
+* Draw grid at start of game, create cell elements
+* Render function
+  * Update display of cells based on data in cells array
+* Timer display and update
+* Win/Loss Display
+* Responsive CSS design
 
+# Next Steps
 
-* state of board does not change with gameplay, only information that is revealed
-  * create board object with all data at start of game?
-    * randomly place mines
-    * assign adjacent mine data to all cells?
-
-* how much to reveal, stop at cells with adjacent mines
-  * reveal cell function
-    * recursion to adjacent cells
-    * stops if has adjacent mines
-
+* ~~Ensure first click is not a mine~~
+  * Mines are placed after user clicks first square, excluding that cell and adjacent cells
+* ~~Implement timer~~
+  * Stops when player wins or loses, restarts with new game
+* ~~Instructions modal~~
+* Win and Lose message modal, includes game time
 
