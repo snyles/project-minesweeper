@@ -75,13 +75,12 @@ resetButton.addEventListener('click', reset );
 difficultySelect.addEventListener('change', reset );
 
 helpIcon.addEventListener('click', function() {
-    helpModal.style.display = "flex";
-    helpModal.addEventListener('click', function() {
-        helpModal.style.display = "none";
-        helpModal.removeEventListener('click');
-    })
-
+    helpModal.style.display = "flex"; 
 })
+helpModal.addEventListener('click', function() {
+    helpModal.style.display = "none";
+});
+
 
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
@@ -133,8 +132,6 @@ function init() {
    
     //timer function
     controller = new AbortController();
-    // let start = document.timeline ? document.timeline.currentTime : 
-    //     performance.now();
     animationInterval(1000, controller.signal, time => {
         timer += time;
         updateTimer(timer);
@@ -158,6 +155,7 @@ function reset() {
     totalCells = boardInfo[boardSize].x * boardInfo[boardSize].y
     flagsLeft = boardInfo[boardSize].mines
 
+    //timer
     controller.abort();
     controller = new AbortController();
     animationInterval(1000, controller.signal, time => {
@@ -198,7 +196,6 @@ function render() {
     } else if ( winner === "player" ) {
         winSound.play();
         applauseSound.play();
-        // kazooSound.play();
         confetti.start();
         controller.abort();
     }
@@ -236,7 +233,7 @@ function drawGrid() {
     })
 }
 
-/*-----------------Timer Functions-------------------*/
+/*-----------------Render Timer Functions-------------------*/
 
 function updateTimer(seconds) {
     let sec = Math.floor(seconds / 1000);
@@ -273,7 +270,7 @@ function rightClick(i) {
 function doubleClick(i) {
     let cell = cells[i];
     if (!cell.clear || !cell.adjMines) return
-
+    
     let flags = cell.adjCells.reduce( (count, adj) => {
         return (cells[adj].flag) ? ++count : count;
     }, 0)
@@ -287,19 +284,6 @@ function createCells() {
     for ( let i = 0; i < totalCells; i++ ) {
         let cell = new Cell(i);
         cells.push(cell);
-    }
-}
-
-function layMines(ex) {
-    mineNumber = boardInfo[boardSize].mines;
-    let exclude = [...ex];
-    
-    while (exclude.length < mineNumber + ex.length) {
-        let rand = Math.floor(Math.random() * totalCells);
-        if (!exclude.includes(rand)) {
-            exclude.push(rand);
-            cells[rand].mine = true;
-        }
     }
 }
 
@@ -324,7 +308,20 @@ function getAdjCells(i) {
         
     return adj;
 }
+
+function layMines(ex) {
+    mineNumber = boardInfo[boardSize].mines;
+    let exclude = [...ex];
     
+    while (exclude.length < mineNumber + ex.length) {
+        let rand = Math.floor(Math.random() * totalCells);
+        if (!exclude.includes(rand)) {
+            exclude.push(rand);
+            cells[rand].mine = true;
+        }
+    }
+}
+
 function setAdjMines () {
     cells.filter( c => !c.mine ).forEach( cell => {
         let mines = cell.adjCells.reduce( (count, adj) => {
@@ -374,20 +371,20 @@ function animationInterval(ms, signal, callback) {
     const start = document.timeline ? document.timeline.currentTime : performance.now();
   
     function frame(timestamp) {
-      if (signal.aborted) return;
-      callback(1000);
-      scheduleFrame(timestamp);
+        if (signal.aborted) return;
+        callback(1000);
+        scheduleFrame(timestamp);
     }
   
     function scheduleFrame(time) {
-      const elapsed = time - start;
-      const roundedElapsed = Math.round(elapsed / ms) * ms;
-      const targetNext = start + roundedElapsed + ms;
-      const delay = targetNext - performance.now();
-      setTimeout(() => requestAnimationFrame(frame), delay);
+        const elapsed = time - start;
+        const roundedElapsed = Math.round(elapsed / ms) * ms;
+        const targetNext = start + roundedElapsed + ms;
+        const delay = targetNext - performance.now();
+        setTimeout(() => requestAnimationFrame(frame), delay);
     }
-  
+
     scheduleFrame(start);
-  }
+}
 
   
