@@ -62,7 +62,8 @@ Obj cell = {
   clear: boolean,
   render: boolean,
   adjCells: array of adjacent cell ids,
-  adjMines: int, number of adjacent mines
+  adjMines: int, number of adjacent mines,
+  element: reference to corresponding DOM element
 }
 ```
 
