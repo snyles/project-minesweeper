@@ -7,7 +7,7 @@ This humble recreation of the legendary Minesweeper game seeks to capture the gl
 
 ### [Play MineSweeper Here!](https://snyles-minesweeper.surge.sh/)
 
-For instructions, click on the Help icon ![Help Icon](https://github.com/snyles/project-minesweeper/raw/main/img/help.png) above the game board.
+For instructions, click on the Help icon ![Help Icon](https://github.com/snyles/project-minesweeper/raw/main/img/help_black.png) above the game board.
 
 Change the game difficulty with the dropdown Difficulty selector and start over by clicking the Reset button.
 
