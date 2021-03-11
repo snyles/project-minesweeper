@@ -20,7 +20,7 @@ html {
   body {
     background: linear-gradient(#a7db72, #5e7942);
     /* Use a system font, if none are available use an available sans-sarif font */
-    font-family: "Roboto",system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    font-family: 'RocknRoll One',system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 2.4rem;
     color: white;
@@ -35,24 +35,72 @@ html {
     text-align: center;
 
     --primary: #d62828;
-    --background: #7A9E56;
+    --bg-light: #a7db72;
+    --bg-dark: #5e7942;
     --board: #8B6555;
     --clear: #B99A8D;
     --accent: #ffd651;
     --darkbrown: #381a20
 }
 
+button, select {
+    font-family: 'RocknRoll One';
+    border: solid 2px var(--bg-dark);
+}
+button {
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: #fff;
+    color: #333;
+}
+
+
+button:active {
+    color: #fff;
+    background-color: var(--bg-dark);
+}
+
 select {
+    padding: 4px 16px;
+    border-radius: 6px;   
     text-align: center;
     color: #333;
+}
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    height: 8rem;
+}
+
+
+#help {
+    margin: 0 30px 0 0;
+    cursor: pointer;
+    background: radial-gradient(var(--bg-dark) 0%, transparent 75%);
+    width: 7.5rem;
+    margin-bottom: -8px;
+}
+
+#resetButton {
+    margin: 0 0 0 30px;
+    width: auto;
+}
+
+#difficulty {
+    display: flex;
+    flex-direction: column;
 }
 
 label {
     text-shadow: black 2px 2px 5px;
 }
+
 #title {
     display: flex;
-    margin: 0 0 1vmin 0;
+    margin: 0;
     padding: 1vmin 0 0 0;
     align-items: flex-end;
     justify-content: center;
@@ -119,19 +167,19 @@ img.flag, img.mine {
 }
 
 #info {
-    margin: 20px 0 2px 0;
+    margin: 1.6rem 0 0.2rem 0;
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
     justify-content: space-evenly;
-    width: 60vmin;
+    width: 70vmin;
     font-size: 2rem;
     text-shadow: black 2px 2px 5px;
 }
 
 #flags-left {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
 }
 
@@ -144,30 +192,8 @@ img.flag, img.mine {
 }
 
 #flags-left > img {
-    width: 25px;
-    height: 25px;
-}
-
-#resetButton {
-    margin: 20px 0 0 30px;
-    width: auto;
-}
-
-#help {
-    margin: 0 30px 0 0;
-    cursor: pointer;
-}
-
-#controls {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-#difficulty {
-    display: flex;
-    flex-direction: column;
+    width: 30px;
+    height: 30px;
 }
 
 .time {

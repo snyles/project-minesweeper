@@ -244,18 +244,18 @@ function toggleModal(content) {
         let timeStr = secondsToString(timer);
         messageText.style.display = "block";
         helpText.style.display = "none";
-        messageH1.innerText = "You Win!";
+        messageH1.innerText = "You Won!";
         messageH1.style.color = "#a7db72";
         messageP.innerHTML = `It only took you <strong>${timeStr}</strong>!`;
-        messageReset.innerText = "Play Again";
+        messageReset.innerText = "Play Again!";
     } else if (content === "lose") {
         let minesLeft = cells.filter( c => c.mine && !c.flag ).length;
         messageText.style.display = "block";
         helpText.style.display = "none";
         messageH1.innerText = "You Lost!";
         messageH1.style.color = "var(--primary)"
-        messageP.innerHTML = `There were only <strong>${minesLeft}</strong> mines left`;
-        messageReset.innerText = "Try Again";
+        messageP.innerHTML = `There were only <strong>${minesLeft}</strong> mines left!`;
+        messageReset.innerText = "Try Again!";
     }
     else {
         messageText.style.display = "none";

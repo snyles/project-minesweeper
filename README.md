@@ -99,3 +99,4 @@ Obj cell = {
   * Stops when player wins or loses, restarts with new game
 * ~~Instructions modal~~
 * ~~Win and Lose message modal, includes game time~~
+* Make numbers in squares different colors
