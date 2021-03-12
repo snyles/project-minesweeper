@@ -41,6 +41,13 @@ const loseSound = new Audio('./sound/lose.wav');
 const winSound = new Audio('./sound/win.wav');
 const applauseSound = new Audio('./sound/applause.wav');
 
+const mineImg = new Image();
+    mineImg.src = "/img/Mine.ico";
+    mineImg.className = "mine";
+const mineRed = new Image();
+    mineRed.src = "/img/MineRed.ico";
+    mineRed.className = "mine";
+
 /*-------------------------------- Variables --------------------------------*/
 
 let flagsLeft,
@@ -216,8 +223,7 @@ function playerWins() {
 function playerLoses() {
     cells.filter( c => c.mine ).forEach ( mine => {
         mine.element.innerHTML = (mine.clear) ?
-            `<img src='img/MineRed.ico' class='mine' />` :
-            `<img src='img/Mine.ico' class='mine' />`;
+            mineRed.outerHTML : mineImg.outerHTML;
         })
     explosionSound.play();
     setTimeout(function() {
