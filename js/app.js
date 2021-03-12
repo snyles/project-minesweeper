@@ -36,11 +36,13 @@ class Cell {
     }
 } 
 
+//sounds
 const explosionSound = new Audio('./sound/boom.wav');
 const loseSound = new Audio('./sound/lose.wav');
 const winSound = new Audio('./sound/win.wav');
 const applauseSound = new Audio('./sound/applause.wav');
 
+//preload mine images
 const mineImg = new Image();
     mineImg.src = "/img/Mine.ico";
     mineImg.className = "mine";

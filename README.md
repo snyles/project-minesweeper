@@ -95,9 +95,9 @@ Obj cell = {
 # Next Steps
 
 * ~~Ensure first click is not a mine~~
-  * Mines are placed after user clicks first square, excluding that cell and adjacent cells
+  * ~~Mines are placed after user clicks first square, excluding that cell and adjacent cells~~
 * ~~Implement timer~~
-  * Stops when player wins or loses, restarts with new game
+  * ~~Stops when player wins or loses, restarts with new game~~
 * ~~Instructions modal~~
 * ~~Win and Lose message modal, includes game time~~
 * Make numbers in squares different colors
