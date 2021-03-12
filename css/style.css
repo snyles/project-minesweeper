@@ -54,7 +54,6 @@ button {
     color: #333;
 }
 
-
 button:active {
     color: #fff;
     background-color: var(--bg-dark);
@@ -115,7 +114,6 @@ label {
     background-size: contain;
     background-repeat: repeat-x;
     background-position: bottom;
-
 }
 
 label, button, option, select {
@@ -299,7 +297,7 @@ span.ecks {
     }
 
     h1 {
-        margin: 0 0 1vmin 0;
+        margin: 0;
         padding: 4vmin 0 0 0;
         font-size: 6rem;
     }
