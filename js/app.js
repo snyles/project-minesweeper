@@ -140,7 +140,6 @@ function init() {
         updateTimer(timer);
     });
 
-    createCells();
     drawGrid()
     render();
 }
@@ -167,7 +166,6 @@ function reset() {
         updateTimer(timer);
     });
    
-    createCells();
     drawGrid()
     render();
 }
@@ -194,21 +192,22 @@ function render() {
 }
 
 function drawGrid() {
-    let x = boardInfo[boardSize].x;
-    let y = boardInfo[boardSize].y;
+    const {x, y}  = boardInfo[boardSize];
+
+    for ( let i = 0; i < x*y; i++ ) {
+        const cell = new Cell(i);
+        const el = document.createElement('div');
+        el.className = 'cell';
+        el.id = cell.id;
+        cell.element = el;
+
+        grid.appendChild(el);
+        cells.push(cell);
+    }
 
     grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`;
     grid.style.gridTemplateRows = `repeat(${y}, 1fr)`;
     grid.className = boardSize;
-
-    cells.forEach( cell => {
-        let el = document.createElement('div');
-        el.className = 'cell';
-        el.id = cell.id;
-
-        cell.element = el;
-        grid.appendChild(el);
-    })
 }
 
 function playerWins() {
@@ -269,14 +268,13 @@ function toggleModal(content) {
 /*-----------------Render Timer Functions-------------------*/
 
 function updateTimer(seconds) {
-    let tstring = secondsToString(seconds);
-    timeEl.innerText = tstring;
+    timeEl.innerText = secondsToString(seconds);
 }
 
-function secondsToString(seconds) {
-    let sec = Math.floor(seconds / 1000);
-    let m = Math.floor(sec / 60)
-    let s = (sec > 59) ? sec - (m * 60) : sec;
+function secondsToString(ms) {
+    const sec = Math.floor(ms / 1000);
+    const m = Math.floor(sec / 60)
+    const s = (sec > 59) ? sec - (m * 60) : sec;
     return (s > 9) ? `${m}:${s}` : `${m}:0${s}`
 }
 
@@ -285,7 +283,7 @@ function secondsToString(seconds) {
 function leftClick(i) {
     if (firstClick) {
         firstClick = false;
-        let exclude = [i, ...getAdjCells(i)];
+        const exclude = [i, ...getAdjCells(i)];
         layMines(exclude);
         setAdjMines();
     }
@@ -306,10 +304,10 @@ function rightClick(i) {
 }
 
 function doubleClick(i) {
-    let cell = cells[i];
+    const cell = cells[i];
     if (!cell.clear || !cell.adjMines) return
     
-    let flags = cell.adjCells.reduce( (count, adj) => {
+    const flags = cell.adjCells.reduce( (count, adj) => {
         return (cells[adj].flag) ? ++count : count;
     }, 0)
     if (flags === cell.adjMines) {
@@ -318,18 +316,13 @@ function doubleClick(i) {
     render();
 }
 
-function createCells() {
-    for ( let i = 0; i < totalCells; i++ ) {
-        let cell = new Cell(i);
-        cells.push(cell);
-    }
-}
+
 
 function getAdjCells(i) {
-    let index = parseInt(i);
-    let row = boardInfo[boardSize].x;
+    const index = parseInt(i);
+    const row = boardInfo[boardSize].x;
     
-    let candidates = [
+    const candidates = [
         index - row - 1,
         index - row,
         index - row + 1,
@@ -340,19 +333,18 @@ function getAdjCells(i) {
         index + row + 1
     ];
     
-    let adj = candidates.filter( n =>
+    return candidates.filter( n =>
         n >= 0 && n < totalCells &&
         Math.abs( (n % row) - (index % row)) <= 1 )
-        
-    return adj;
+
 }
 
 function layMines(ex) {
     mineNumber = boardInfo[boardSize].mines;
-    let exclude = [...ex];
+    const exclude = [...ex];
     
     while (exclude.length < mineNumber + ex.length) {
-        let rand = Math.floor(Math.random() * totalCells);
+        const rand = Math.floor(Math.random() * totalCells);
         if (!exclude.includes(rand)) {
             exclude.push(rand);
             cells[rand].mine = true;
@@ -362,7 +354,7 @@ function layMines(ex) {
 
 function setAdjMines () {
     cells.filter( c => !c.mine ).forEach( cell => {
-        let mines = cell.adjCells.reduce( (count, adj) => {
+        const mines = cell.adjCells.reduce( (count, adj) => {
             return (cells[adj].mine) ? ++count : count
         }, 0)
         cell.adjMines = (mines > 0) ? mines : null;
@@ -370,7 +362,7 @@ function setAdjMines () {
 }
 
 function clearCell(i) {
-    let cell = cells[i]
+    const cell = cells[i]
 
     if (cell.clear || cell.flag) return
     if (cell.mine) {
