@@ -91,19 +91,19 @@ helpIcon.addEventListener('click', () => {
 
 grid.addEventListener('contextmenu', function (e) {
     e.preventDefault();
-    let i = parseInt(e.target.id);
+    const i = parseInt(e.target.id);
     if (firstClick || winner || isNaN(i)) return 
     rightClick(i);
 });
 
 grid.addEventListener('click', function(e) {
-    let i = parseInt(e.target.id);
+    const i = parseInt(e.target.id);
     if (winner || isNaN(i)) return;
     leftClick(i);
 });
 
 grid.addEventListener('dblclick', function(e) {
-    let i = parseInt(e.target.id);
+    const i = parseInt(e.target.id);
     if (winner || isNaN(i)) return;
     doubleClick(i);
 })
@@ -115,7 +115,7 @@ grid.addEventListener('mousedown', function(e) {
 
 grid.addEventListener('mouseup', function(e) {
     if (rightClicked && leftClicked) {
-        let i = parseInt(e.target.id);
+        const i = parseInt(e.target.id);
         if (winner || isNaN(i)) return;
         doubleClick(i);
     }
@@ -244,7 +244,7 @@ function toggleModal(content) {
         helpText.style.display = "block";
         messageText.style.display = "none";
     } else if (content === "win") {
-        let timeStr = secondsToString(timer);
+        const timeStr = secondsToString(timer);
         messageText.style.display = "block";
         helpText.style.display = "none";
         messageH1.innerText = "You Won!";
@@ -252,7 +252,7 @@ function toggleModal(content) {
         messageP.innerHTML = `It only took you <strong>${timeStr}</strong>!`;
         messageReset.innerText = "Play Again!";
     } else if (content === "lose") {
-        let minesLeft = cells.filter( c => c.mine && !c.flag ).length;
+        const minesLeft = cells.filter( c => c.mine && !c.flag ).length;
         messageText.style.display = "block";
         helpText.style.display = "none";
         messageH1.innerText = "You Lost!";
